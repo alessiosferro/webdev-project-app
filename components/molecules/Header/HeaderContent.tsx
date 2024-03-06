@@ -14,11 +14,11 @@ import {
     Text,
     useDisclosure
 } from "@chakra-ui/react";
-import Link from "next/link";
 import Locales from "@/components/molecules/Locales";
 import {useTranslations} from "next-intl";
 import {User} from "@supabase/gotrue-js";
 import {ReactNode} from "react";
+import {Link} from "@/navigation";
 
 export default function HeaderContent({user, logoutButton}: HeaderContentProps) {
     const t = useTranslations('common');
@@ -30,21 +30,17 @@ export default function HeaderContent({user, logoutButton}: HeaderContentProps) 
                   templateColumns={{base: 'repeat(4, 1fr)', lg: 'repeat(12, 1fr)'}}
                   as="header">
                 {user && <GridItem display={{base: 'none', lg: 'flex'}} gap="2rem" gridColumn="1/4">
-                    <Link passHref legacyBehavior href="/public">
-                        <Button colorScheme="teal" as="a" variant="link">Home</Button>
-                    </Link>
+                    <Button as={Link} href="/" colorScheme="teal" variant="link">Home</Button>
 
-                    <Link passHref legacyBehavior href={`/${user.id}`}>
-                        <Button colorScheme="teal" as="a" variant="link">
-                            {t('button.yourProfile')}
-                        </Button>
-                    </Link>
+                    <Button as={Link} href="/profile" colorScheme="teal" variant="link">
+                        {t('button.yourProfile')}
+                    </Button>
 
                     {logoutButton}
                 </GridItem>}
 
                 <GridItem gridColumn={{base: "1/4", lg: "4/-4"}}>
-                    <Link href="/public">
+                    <Link href="/">
                         <Heading textAlign={{lg: 'center'}} as="h1">{t('header.title')}</Heading>
                     </Link>
                 </GridItem>

@@ -1,3 +1,5 @@
+'use client';
+
 import {LinkBox, LinkOverlay, Text} from "@chakra-ui/react";
 import Post from "@/model/post.model";
 import useFormattedDate from "@/hooks/use-formatted-date";
@@ -22,11 +24,9 @@ const PostCard = ({post}: PostCardProps) => {
                 {formattedDate}
             </Text>
             <Text>
-                <Link legacyBehavior passHref href={`/${post.user_id}/posts/${post.id}`}>
-                    <LinkOverlay>
-                        {post.message}
-                    </LinkOverlay>
-                </Link>
+                <LinkOverlay as={Link} href={`/${post.user_id}/posts/${post.id}`}>
+                    {post.message}
+                </LinkOverlay>
             </Text>
         </LinkBox>
     )

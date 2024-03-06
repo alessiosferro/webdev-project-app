@@ -1,3 +1,5 @@
+'use client';
+
 import {Button, Flex, Text} from "@chakra-ui/react";
 import {Link, locales, usePathname} from "@/navigation";
 import {useTranslations} from "next-intl";
@@ -16,14 +18,15 @@ const Locales = ({showLabel}: LocalesProps) => {
 
             <Flex gap="1rem">
                 {locales.map(locale => (
-                    <Link passHref legacyBehavior key={locale} href={pathname} locale={locale}>
-                        <Button as="a"
-                                minW={0}
-                                variant="link"
-                                colorScheme='teal'
-                                textTransform="uppercase"
-                        >{locale}</Button>
-                    </Link>
+                    <Button as={Link}
+                            key={locale}
+                            href={pathname}
+                            locale={locale}
+                            minW={0}
+                            variant="link"
+                            colorScheme='teal'
+                            textTransform="uppercase"
+                    >{locale}</Button>
                 ))}
             </Flex>
         </Flex>

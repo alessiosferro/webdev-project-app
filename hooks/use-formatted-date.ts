@@ -1,8 +1,8 @@
 import {useMemo} from "react";
-import dayjs from "dayjs";
+import {getFormattedDate} from "@/utils";
 
 const useFormattedDate = (date: string) => {
-    return useMemo(() => dayjs(date).format('DD MMM YYYY HH:mm:ss'), [date]);
+    return useMemo(() => getFormattedDate(date), [date]);
 }
 
 export default useFormattedDate;
