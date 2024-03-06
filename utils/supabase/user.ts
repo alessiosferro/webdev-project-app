@@ -7,6 +7,8 @@ export default async function getUser() {
 
     const {data, error} = await supabase.auth.getUser();
 
+    supabase.from('profiles')
+
     if (!data || error) {
         redirect('/login');
     }

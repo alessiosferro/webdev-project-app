@@ -1,3 +1,7 @@
+import {Container, Text} from "@chakra-ui/react";
+
 export default function ErrorPage() {
-    return <p>Sorry, something went wrong</p>
+    return <Container>
+        <Text>Sorry, something went wrong</Text>
+    </Container>
 }

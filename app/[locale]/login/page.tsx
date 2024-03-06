@@ -53,6 +53,7 @@ export default function LoginPage() {
 
                 <Flex gap="1rem">
                     <Button variant="solid"
+                            type="submit"
                             formAction={signup}
                             colorScheme="teal">
                         {t('button.register')}

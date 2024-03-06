@@ -6,26 +6,15 @@ import {AddIcon} from "@chakra-ui/icons";
 import Image from "next/image";
 import {useTranslations} from "next-intl";
 import {User} from "@supabase/gotrue-js";
-import {useCallback, useRef} from "react";
-import {createClient} from "@/utils/supabase/client";
+import {useRef} from "react";
+import uploadProfileImage from "@/app/[locale]/profile/actions";
 
-const PhotoBox = ({user}: PhotoBoxProps) => {
+const ProfilePhotoForm = ({user}: ProfilePhotoFormProps) => {
     const t = useTranslations('common');
 
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const uploadImageHandler = useCallback(async (file: File) => {
-        const supabase = createClient();
-
-        try {
-            await supabase
-                .storage
-                .from('profile-pictures')
-                .upload(`${user.id}/profile-image.jpg`, file, {cacheControl: '3600', upsert: false});
-        } catch (err) {
-            console.log(err);
-        }
-    }, []);
+    const formRef = useRef<HTMLFormElement>(null);
 
     return (
         <Box border=".1rem solid"
@@ -33,9 +22,11 @@ const PhotoBox = ({user}: PhotoBoxProps) => {
              borderRadius=".4rem"
              position="relative"
              maxW="30rem">
-            <FileUpload accept="image/*"
-                        onFileChange={uploadImageHandler}
-                        inputRef={inputRef}/>
+            <form ref={formRef} action={uploadProfileImage}>
+                <FileUpload accept="image/*"
+                            onFileChange={() => formRef.current?.submit()}
+                            inputRef={inputRef}/>
+            </form>
 
             <Button colorScheme="teal"
                     position="absolute"
@@ -57,8 +48,8 @@ const PhotoBox = ({user}: PhotoBoxProps) => {
     )
 }
 
-interface PhotoBoxProps {
+interface ProfilePhotoFormProps {
     user: User;
 }
 
-export default PhotoBox;
+export default ProfilePhotoForm;

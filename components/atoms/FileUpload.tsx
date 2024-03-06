@@ -29,7 +29,7 @@ const FileUpload = (props: FileUploadProps) => {
     }, []);
 
     return (
-        <Box as="input" accept={accept} display="none" type="file" ref={inputRef}/>
+        <Box as="input" name="file" accept={accept} display="none" type="file" ref={inputRef}/>
     );
 }
 
