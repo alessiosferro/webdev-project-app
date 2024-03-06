@@ -6,17 +6,18 @@ import {Button, Container, Flex, Heading} from "@chakra-ui/react";
 import InputControl from "@/components/molecules/InputControl";
 import {getTranslations} from "next-intl/server";
 import {login, signup} from "@/app/[locale]/login/actions";
+import {LocaleParams} from "@/model/locale-params.props";
 
 const defaultValues = {
     email: "",
     password: ""
 }
 
-export const generateMetadata = async () => {
-    const {raw} = await getTranslations('common');
+export const generateMetadata = async ({params: {locale}}: LocaleParams) => {
+    const t = await getTranslations({namespace: 'common', locale});
 
     return {
-        title: raw('seo.login')
+        title: t('seo.login')
     }
 }
 

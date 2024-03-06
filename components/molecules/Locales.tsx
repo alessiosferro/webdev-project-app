@@ -1,7 +1,5 @@
-import NextLink from "next/link";
 import {Button, Flex, Text} from "@chakra-ui/react";
-import {usePathname} from "next/navigation";
-import {locales} from "@/navigation";
+import {Link, locales, usePathname} from "@/navigation";
 import {useTranslations} from "next-intl";
 
 interface LocalesProps {
@@ -18,14 +16,14 @@ const Locales = ({showLabel}: LocalesProps) => {
 
             <Flex gap="1rem">
                 {locales.map(locale => (
-                    <NextLink passHref legacyBehavior key={locale} href={pathname} locale={locale}>
+                    <Link passHref legacyBehavior key={locale} href={pathname} locale={locale}>
                         <Button as="a"
                                 minW={0}
                                 variant="link"
                                 colorScheme='teal'
                                 textTransform="uppercase"
                         >{locale}</Button>
-                    </NextLink>
+                    </Link>
                 ))}
             </Flex>
         </Flex>
