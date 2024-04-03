@@ -14,7 +14,6 @@ export default function RootLayout({children, params: {locale}}: PropsWithChildr
 
     const messages = useMessages();
 
-
     return (
         <html lang={locale}>
 

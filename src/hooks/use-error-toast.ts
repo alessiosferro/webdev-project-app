@@ -1,5 +1,5 @@
 import {useToast} from "@chakra-ui/react";
-import {useTranslation} from "next-i18next";
+import {useTranslations} from "next-intl";
 import {useCallback} from "react";
 
 interface ErrorToastProps {
@@ -9,7 +9,7 @@ interface ErrorToastProps {
 
 const useErrorToast = () => {
     const toast = useToast();
-    const {t} = useTranslation();
+    const t = useTranslations('common');
 
     return useCallback(({title = t('error.noun'), message = t('error.generic')}: ErrorToastProps) => {
         toast({
