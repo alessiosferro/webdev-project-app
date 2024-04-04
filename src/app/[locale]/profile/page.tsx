@@ -6,7 +6,6 @@ import {getTranslations} from "next-intl/server";
 import {LocaleParams} from "@/model/locale-params.props";
 import ProfilePhotoForm from "@/components/molecules/ProfilePhotoForm";
 import {getFormattedDate} from "@/utils";
-import {createClient} from "@/utils/supabase/server";
 
 export default async function ProfilePage({params: {locale}}: LocaleParams) {
     const t = await getTranslations({locale, namespace: 'common'});
@@ -17,14 +16,12 @@ export default async function ProfilePage({params: {locale}}: LocaleParams) {
 
     const formattedDate = getFormattedDate(user.created_at);
 
-    const supabase = createClient();
-
     return (
         <Container>
             <Stack spacing="3rem" divider={<StackDivider/>}>
                 <Flex direction="column" align="flex-start" gap="2rem">
-                    <ProfilePhotoForm user={user}/>
-                    <Heading as="h2" size="lg">{user.email}</Heading>
+                    <ProfilePhotoForm avatarUrl={user.user_metadata?.avatar_url}/>
+                    <Heading as="h2" size="lg">{user.user_metadata?.name || user.email}</Heading>
                     <Text>{t('profile.accountCreatedAt', {createdAt: formattedDate})}</Text>
                 </Flex>
 

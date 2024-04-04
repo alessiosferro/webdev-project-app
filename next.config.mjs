@@ -8,6 +8,9 @@ const nextConfig = {
         remotePatterns: [
             {
                 hostname: 'loywoviwfotlcofcfoiu.supabase.co'
+            },
+            {
+                hostname: 'lh3.googleusercontent.com'
             }
         ]
     }

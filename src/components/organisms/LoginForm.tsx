@@ -8,11 +8,13 @@ import InputControl from "@/components/molecules/InputControl";
 import {FormProvider, useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import useValidationRules from "@/hooks/use-validation-rules";
+import {createClient} from "@/utils/supabase/client";
 
 export default function LoginForm() {
     const t = useTranslations('common');
 
     const form = useForm({defaultValues, mode: 'onBlur'});
+    const supabase = createClient();
 
     const [registerState, signupAction] = useFormState(signup, {message: "", errors: {}});
     const [loginState, loginAction] = useFormState(login, {message: "", errors: {}});
@@ -38,6 +40,15 @@ export default function LoginForm() {
         }
     }
 
+    const handleLoginWithGoogle = async () => {
+        await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `http://localhost:3000/api/auth/callback`
+            }
+        });
+    }
+
     useEffect(() => {
         setErrorMessage(loginState?.message);
         updateFormErrors(loginState?.errors);
@@ -52,6 +63,8 @@ export default function LoginForm() {
         <FormProvider {...form}>
             <Container as="form">
                 <Heading as="h2" size="lg">Login</Heading>
+
+                <button onClick={handleLoginWithGoogle}>Login with Google</button>
 
                 <Flex direction="column" gap="1rem" my="2rem">
                     <InputControl label={t('label.email')}
