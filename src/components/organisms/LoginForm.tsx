@@ -64,7 +64,10 @@ export default function LoginForm() {
             <Container as="form">
                 <Heading as="h2" size="lg">Login</Heading>
 
-                <button onClick={handleLoginWithGoogle}>Login with Google</button>
+                <Button colorScheme="blue"
+                        mt="2rem"
+                        onClick={handleLoginWithGoogle}>Login with
+                    Google</Button>
 
                 <Flex direction="column" gap="1rem" my="2rem">
                     <InputControl label={t('label.email')}
@@ -85,7 +88,7 @@ export default function LoginForm() {
                 <Flex gap="1rem">
                     <Button variant="solid"
                             type="submit"
-                            colorScheme="teal"
+                            colorScheme="blue"
                             formAction={signupAction}
                     >
                         {t('button.register')}
@@ -93,7 +96,7 @@ export default function LoginForm() {
 
                     <Button variant="outline"
                             type="submit"
-                            colorScheme="teal"
+                            colorScheme="blue"
                             formAction={loginAction}
                     >
                         {t('button.login')}

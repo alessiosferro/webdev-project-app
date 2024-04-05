@@ -26,7 +26,7 @@ const LogoutButton = () => {
         <Box display="flex" alignItems="center" as="form" action={logout}>
             <Button variant="link"
                     type="submit"
-                    colorScheme="teal">
+                    colorScheme="blue">
                 {t('button.logout')}
             </Button>
         </Box>

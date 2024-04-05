@@ -5,8 +5,8 @@ import {Box, Container} from "@chakra-ui/react";
 import PostList from "@/components/molecules/PostList";
 import getPosts from "@/utils/supabase/posts";
 import getUser from "@/utils/supabase/user";
-import AddPostWrapper from "@/components/molecules/AddPostWrapper";
 import AddPostForm from "@/components/molecules/AddPostForm";
+import {createPost} from "@/utils/actions";
 
 
 export default async function Home() {
@@ -17,9 +17,7 @@ export default async function Home() {
     return (
         <ClientFormProvider defaultValues={defaultValues}>
             <Container>
-                <AddPostWrapper>
-                    <AddPostForm/>
-                </AddPostWrapper>
+                <AddPostForm ctaLabel="Posta" action={createPost}/>
 
                 <Box mt="3rem">
                     <PostList posts={posts}/>

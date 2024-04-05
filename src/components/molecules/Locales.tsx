@@ -24,7 +24,7 @@ const Locales = ({showLabel}: LocalesProps) => {
                             locale={locale}
                             minW={0}
                             variant="link"
-                            colorScheme='teal'
+                            colorScheme="blue"
                             textTransform="uppercase"
                     >{locale}</Button>
                 ))}

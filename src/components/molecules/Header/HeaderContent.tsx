@@ -19,6 +19,7 @@ import {useTranslations} from "next-intl";
 import {User} from "@supabase/gotrue-js";
 import {ReactNode} from "react";
 import {Link} from "@/navigation";
+import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 
 export default function HeaderContent({user, logoutButton}: HeaderContentProps) {
     const t = useTranslations('common');
@@ -30,9 +31,9 @@ export default function HeaderContent({user, logoutButton}: HeaderContentProps) 
                   templateColumns={{base: 'repeat(4, 1fr)', lg: 'repeat(12, 1fr)'}}
                   as="header">
                 {user && <GridItem display={{base: 'none', lg: 'flex'}} gap="2rem" gridColumn="1/4">
-                    <Button as={Link} href="/" colorScheme="teal" variant="link">Home</Button>
+                    <Button as={Link} href="/" colorScheme="blue" variant="link">Home</Button>
 
-                    <Button as={Link} href="/profile" colorScheme="teal" variant="link">
+                    <Button as={Link} href="/profile" colorScheme="blue" variant="link">
                         {t('button.yourProfile')}
                     </Button>
 
@@ -53,8 +54,9 @@ export default function HeaderContent({user, logoutButton}: HeaderContentProps) 
                 </GridItem>
 
                 <GridItem justifySelf="flex-end" alignSelf="center" gridColumn="4/5" display={{lg: 'none'}}>
-                    <IconButton colorScheme="teal"
+                    <IconButton colorScheme="blue"
                                 variant="ghost"
+                                icon={<HamburgerIcon fontSize="2rem"/>}
                                 onClick={onOpen}
                                 aria-label={t('button.openSideMenu')}
                     />
@@ -68,8 +70,9 @@ export default function HeaderContent({user, logoutButton}: HeaderContentProps) 
                                   borderBottomWidth=".1rem">
                         {t('drawer.title')}
 
-                        <IconButton colorScheme="teal"
+                        <IconButton colorScheme="blue"
                                     variant="ghost"
+                                    icon={<CloseIcon/>}
                                     aria-label={t('button.closeSideMenu')}
                                     onClick={onClose}
 

@@ -1,17 +1,11 @@
 import {PropsWithChildren} from "react";
 import AppProviders from "@/components/providers/AppProviders";
-import {locales} from "@/navigation";
-import {notFound} from "next/navigation";
 import {NextIntlClientProvider, useMessages} from "next-intl";
 import Header from "@/components/molecules/Header/Header";
 import {Box, Flex} from "@chakra-ui/react";
 import Footer from "@/components/molecules/Footer";
 
 export default function RootLayout({children, params: {locale}}: PropsWithChildren<{ params: { locale: string } }>) {
-    if (!locales.includes(locale)) {
-        notFound();
-    }
-
     const messages = useMessages();
 
     return (

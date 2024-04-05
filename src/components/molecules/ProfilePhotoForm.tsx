@@ -29,7 +29,7 @@ const ProfilePhotoForm = ({avatarUrl}: ProfilePhotoFormProps) => {
                                 inputRef={inputRef}/>
                 </form>
 
-                <Button colorScheme="teal"
+                <Button colorScheme="blue"
                         alignItems="center"
                         gap=".4rem"
                         variant="outline"
