@@ -1,6 +1,8 @@
 import {defineStyle, defineStyleConfig, extendTheme} from "@chakra-ui/react";
 import space from "@/utils/chakra/space";
 
+export const colorScheme = "blue";
+
 const theme = extendTheme({
     components: {
         Container: defineStyleConfig({

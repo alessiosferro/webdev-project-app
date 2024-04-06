@@ -7,6 +7,7 @@ import Image from "next/image";
 import {useTranslations} from "next-intl";
 import {useRef} from "react";
 import uploadProfileImage from "@/app/[locale]/profile/actions";
+import {colorScheme} from "@/utils/chakra/theme";
 
 const ProfilePhotoForm = ({avatarUrl}: ProfilePhotoFormProps) => {
     const t = useTranslations('common');
@@ -29,7 +30,7 @@ const ProfilePhotoForm = ({avatarUrl}: ProfilePhotoFormProps) => {
                                 inputRef={inputRef}/>
                 </form>
 
-                <Button colorScheme="blue"
+                <Button colorScheme={colorScheme}
                         alignItems="center"
                         gap=".4rem"
                         variant="outline"

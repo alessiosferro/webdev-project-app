@@ -3,6 +3,7 @@
 import {Button, Flex, Text} from "@chakra-ui/react";
 import {Link, locales, usePathname} from "@/navigation";
 import {useTranslations} from "next-intl";
+import {colorScheme} from "@/utils/chakra/theme";
 
 interface LocalesProps {
     showLabel?: boolean;
@@ -24,7 +25,7 @@ const Locales = ({showLabel}: LocalesProps) => {
                             locale={locale}
                             minW={0}
                             variant="link"
-                            colorScheme="blue"
+                            colorScheme={colorScheme}
                             textTransform="uppercase"
                     >{locale}</Button>
                 ))}

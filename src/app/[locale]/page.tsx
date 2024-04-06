@@ -8,7 +8,6 @@ import getUser from "@/utils/supabase/user";
 import AddPostForm from "@/components/molecules/AddPostForm";
 import {createPost} from "@/utils/actions";
 
-
 export default async function Home() {
     await getUser();
 

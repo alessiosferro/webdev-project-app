@@ -1,6 +1,7 @@
 import {Button, Container, Heading, Text} from "@chakra-ui/react";
 import {Link} from "@/navigation";
 import {createClient} from "@/utils/supabase/server";
+import {colorScheme} from "@/utils/chakra/theme";
 
 const NotFoundPage = async () => {
     const supabase = createClient();
@@ -22,7 +23,7 @@ const NotFoundPage = async () => {
             <Text mt="1rem">Sorry, we couldn&apos;t find the page you requested!</Text>
 
             <Link legacyBehavior passHref href={link.href}>
-                <Button mt="4rem" as="a" variant="solid" colorScheme="blue">
+                <Button mt="4rem" as="a" variant="solid" colorScheme={colorScheme}>
                     {link.label}
                 </Button>
             </Link>

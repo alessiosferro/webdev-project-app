@@ -11,6 +11,7 @@ export default async function Header() {
     return (
         <Container maxW="container.lg"
                    py="2rem"
+                   px={0}
                    borderBottom=".1rem solid"
                    borderBottomColor="gray.200">
             <HeaderContent user={user}

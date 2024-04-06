@@ -9,6 +9,9 @@ import {FormProvider, useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import useValidationRules from "@/hooks/use-validation-rules";
 import {createClient} from "@/utils/supabase/client";
+import {colorScheme} from "@/utils/chakra/theme";
+import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
+import {useRouter} from "@/navigation";
 
 export default function LoginForm() {
     const t = useTranslations('common');
@@ -22,6 +25,8 @@ export default function LoginForm() {
     const {requiredField} = useValidationRules();
 
     const [errorMessage, setErrorMessage] = useState("");
+
+    const {refresh} = useRouter();
 
     function updateFormErrors(errors: Record<string, string[]>) {
         form.clearErrors();
@@ -40,13 +45,15 @@ export default function LoginForm() {
         }
     }
 
-    const handleLoginWithGoogle = async () => {
-        await supabase.auth.signInWithOAuth({
+    const handleLoginWithGoogle = async (response: CredentialResponse) => {
+        if (!response.credential) return;
+
+        await supabase.auth.signInWithIdToken({
             provider: 'google',
-            options: {
-                redirectTo: `http://localhost:3000/api/auth/callback`
-            }
+            token: response.credential
         });
+
+        refresh();
     }
 
     useEffect(() => {
@@ -62,12 +69,9 @@ export default function LoginForm() {
     return (
         <FormProvider {...form}>
             <Container as="form">
-                <Heading as="h2" size="lg">Login</Heading>
+                <Heading mb="2rem" as="h2" size="lg">Login</Heading>
 
-                <Button colorScheme="blue"
-                        mt="2rem"
-                        onClick={handleLoginWithGoogle}>Login with
-                    Google</Button>
+                <GoogleLogin width="300px" onSuccess={handleLoginWithGoogle}/>
 
                 <Flex direction="column" gap="1rem" my="2rem">
                     <InputControl label={t('label.email')}
@@ -88,7 +92,7 @@ export default function LoginForm() {
                 <Flex gap="1rem">
                     <Button variant="solid"
                             type="submit"
-                            colorScheme="blue"
+                            colorScheme={colorScheme}
                             formAction={signupAction}
                     >
                         {t('button.register')}
@@ -96,7 +100,7 @@ export default function LoginForm() {
 
                     <Button variant="outline"
                             type="submit"
-                            colorScheme="blue"
+                            colorScheme={colorScheme}
                             formAction={loginAction}
                     >
                         {t('button.login')}

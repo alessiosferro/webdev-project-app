@@ -3,6 +3,7 @@ import {useTranslations} from "next-intl";
 import {createClient} from "@/utils/supabase/server";
 import {redirect} from "next/navigation";
 import {revalidatePath} from "next/cache";
+import {colorScheme} from "@/utils/chakra/theme";
 
 const LogoutButton = () => {
     const t = useTranslations('common');
@@ -24,9 +25,9 @@ const LogoutButton = () => {
 
     return (
         <Box display="flex" alignItems="center" as="form" action={logout}>
-            <Button variant="link"
+            <Button variant="ghost"
                     type="submit"
-                    colorScheme="blue">
+                    colorScheme={colorScheme}>
                 {t('button.logout')}
             </Button>
         </Box>

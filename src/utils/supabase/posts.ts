@@ -4,9 +4,15 @@ import Post from "@/model/post.model";
 export default async function getPosts() {
     const supabase = createClient();
 
-    const response = await supabase
+    const {error, data} = await supabase
         .from('posts')
-        .select('id, user_id, message, created_at');
+        .select('id, message, created_at, users(*)')
+        .returns<Post[]>();
 
-    return response.data as Post[];
+    if (error || !data) {
+        error && console.error(error);
+        return [];
+    }
+
+    return data;
 }

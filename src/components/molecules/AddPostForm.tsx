@@ -1,5 +1,6 @@
 import TextareaControl from "@/components/molecules/TextareaControl";
 import {Button, Flex} from "@chakra-ui/react";
+import {colorScheme} from "@/utils/chakra/theme";
 
 const AddPostForm = ({action, ctaLabel}: { ctaLabel: string, action: (formData: FormData) => Promise<void> }) => {
     return (
@@ -10,7 +11,7 @@ const AddPostForm = ({action, ctaLabel}: { ctaLabel: string, action: (formData: 
               alignItems="flex-end">
             <TextareaControl name="message"/>
 
-            <Button type="submit" colorScheme="blue" variant="solid">{ctaLabel}</Button>
+            <Button type="submit" colorScheme={colorScheme} variant="solid">{ctaLabel}</Button>
         </Flex>
     )
 }

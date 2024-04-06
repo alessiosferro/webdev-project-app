@@ -1,5 +1,6 @@
-import {Container} from "@chakra-ui/react";
+import {Button, Container} from "@chakra-ui/react";
 import {useTranslations} from "next-intl";
+import {colorScheme} from "@/utils/chakra/theme";
 
 export default function Footer() {
     const t = useTranslations('common');
@@ -11,6 +12,9 @@ export default function Footer() {
                    py="2rem"
                    textAlign="center" as="footer">
             {t('footer.copy')}
+            {" "}
+            <Button as="a" variant="link" colorScheme={colorScheme} href="https://www.linkedin.com/in/alessiosferro/">Alessio
+                Sferro</Button>
         </Container>
     )
 }
