@@ -15,3 +15,4 @@ export function getLocalizedPath({locale, path}: { locale: string, path: string 
 
     return `/${locale}${pathWithoutLocale}`;
 }
+

@@ -6,7 +6,7 @@ export default async function getPosts() {
 
     const {error, data} = await supabase
         .from('posts')
-        .select('id, message, created_at, users(*)')
+        .select('*, users(*)')
         .returns<Post[]>();
 
     if (error || !data) {

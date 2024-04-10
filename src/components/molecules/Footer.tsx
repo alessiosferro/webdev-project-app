@@ -1,3 +1,5 @@
+'use client';
+
 import {Button, Container} from "@chakra-ui/react";
 import {useTranslations} from "next-intl";
 import {colorScheme} from "@/utils/chakra/theme";

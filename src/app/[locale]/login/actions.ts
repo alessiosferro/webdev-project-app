@@ -33,6 +33,19 @@ export async function login(prevState: State | null, formData: FormData) {
     redirect('/')
 }
 
+export async function logout() {
+    const supabase = createClient();
+
+    const {error} = await supabase.auth.signOut();
+
+    if (error) {
+        redirect('/error');
+    }
+
+    revalidatePath('/login');
+    redirect('/login');
+}
+
 export async function signup(prevState: State | null, formData: FormData) {
     const supabase = createClient();
 

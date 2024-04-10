@@ -5,8 +5,7 @@ import {Box, Container} from "@chakra-ui/react";
 import PostList from "@/components/molecules/PostList";
 import getPosts from "@/utils/supabase/posts";
 import getUser from "@/utils/supabase/user";
-import AddPostForm from "@/components/molecules/AddPostForm";
-import {createPost} from "@/utils/actions";
+import AddPostFormServer from "@/components/molecules/AddPostFormServer";
 
 export default async function Home() {
     await getUser();
@@ -16,7 +15,7 @@ export default async function Home() {
     return (
         <ClientFormProvider defaultValues={defaultValues}>
             <Container>
-                <AddPostForm ctaLabel="Posta" action={createPost}/>
+                <AddPostFormServer/>
 
                 <Box mt="3rem">
                     <PostList posts={posts}/>
@@ -27,7 +26,10 @@ export default async function Home() {
 }
 
 const defaultValues = {
-    message: ""
+    disruption: "",
+    city: "",
+    message: "",
+    image: null
 }
 
 export async function generateMetadata({params: {locale}}: LocaleParams) {

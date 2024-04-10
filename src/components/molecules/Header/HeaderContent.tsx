@@ -16,15 +16,16 @@ import {
 } from "@chakra-ui/react";
 import Locales from "@/components/molecules/Locales";
 import {useTranslations} from "next-intl";
-import {ReactNode} from "react";
 import {Link} from "@/navigation";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {colorScheme} from "@/utils/chakra/theme";
 import {User} from "@supabase/supabase-js";
+import LogoutButton from "@/components/molecules/LogoutButton";
 
-export default function HeaderContent({user, logoutButton}: HeaderContentProps) {
+export default function HeaderContent({user}: HeaderContentProps) {
     const t = useTranslations('common');
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const logoutMessage = t('button.logout');
 
     return (
         <>
@@ -39,7 +40,7 @@ export default function HeaderContent({user, logoutButton}: HeaderContentProps) 
                         {t('button.yourProfile')}
                     </Button>
 
-                    {logoutButton}
+                    <LogoutButton text={logoutMessage}/>
                 </GridItem>}
 
                 <GridItem gridColumn={{base: "1/4", lg: "5/-5"}}>
@@ -93,7 +94,7 @@ export default function HeaderContent({user, logoutButton}: HeaderContentProps) 
                         {user && (
                             <>
                                 <Text>{t('drawer.welcome', {email: user.email})}</Text>
-                                {logoutButton}
+                                <LogoutButton text={logoutMessage}/>
                             </>
                         )}
                     </DrawerBody>
@@ -105,5 +106,4 @@ export default function HeaderContent({user, logoutButton}: HeaderContentProps) 
 
 interface HeaderContentProps {
     user: User | null;
-    logoutButton: ReactNode;
 }

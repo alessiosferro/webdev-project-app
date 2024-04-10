@@ -5,8 +5,11 @@ import Post from "@/model/post.model";
 import {Link} from "@/navigation";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Image from "next/image";
 
 dayjs.extend(relativeTime);
+
+const BASE_POST_STORAGE_URL = 'https://loywoviwfotlcofcfoiu.supabase.co/storage/v1/object/public/posts';
 
 const PostCard = ({post}: PostCardProps) => {
     const fullName = `${post.users.first_name} ${post.users.last_name}`;
@@ -34,8 +37,18 @@ const PostCard = ({post}: PostCardProps) => {
                         </Text>
                     </Flex>
                     <Text>
-                        <LinkOverlay as={Link} href={`/${post.users.id}/posts/${post.id}`}>
+                        <LinkOverlay display="flex" flexDirection="column" gap="2rem" as={Link}
+                                     href={`/${post.users.id}/posts/${post.id}`}>
                             {post.message}
+
+                            {post.image_url && (
+                                <Box mb="2rem">
+                                    <Image
+                                        width={300}
+                                        height={300}
+                                        src={`${BASE_POST_STORAGE_URL}/${post.image_url}`}
+                                        alt=""/>
+                                </Box>)}
                         </LinkOverlay>
                     </Text>
                 </Flex>

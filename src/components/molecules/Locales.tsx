@@ -10,7 +10,7 @@ interface LocalesProps {
 }
 
 const Locales = ({showLabel}: LocalesProps) => {
-    const t = useTranslations();
+    const t = useTranslations('common');
     const pathname = usePathname();
 
     return (

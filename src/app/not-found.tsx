@@ -3,6 +3,8 @@ import {Link} from "@/navigation";
 import {createClient} from "@/utils/supabase/server";
 import {colorScheme} from "@/utils/chakra/theme";
 
+export const dynamic = 'force-dynamic';
+
 const NotFoundPage = async () => {
     const supabase = createClient();
 

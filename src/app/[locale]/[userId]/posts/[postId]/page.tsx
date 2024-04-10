@@ -3,7 +3,6 @@ import PostCard from "@/components/atoms/PostCard";
 import Post from "@/model/post.model";
 import {notFound} from "next/navigation";
 import {Container} from "@chakra-ui/react";
-import AddPostForm from "@/components/molecules/AddPostForm";
 import getUser from "@/utils/supabase/user";
 import {revalidatePath} from "next/cache";
 import ClientFormProvider from "@/components/providers/ClientFormProvider";
@@ -65,7 +64,6 @@ const PostPage = async ({params}: {
                     <PostCard post={post} key={post.id}/>
                 ))}
 
-                <AddPostForm ctaLabel="Commenta" action={commentPost}/>
             </Container>
         </ClientFormProvider>
     )

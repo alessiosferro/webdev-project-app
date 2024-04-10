@@ -1,4 +1,4 @@
-import {defineStyle, defineStyleConfig, extendTheme} from "@chakra-ui/react";
+import {defineStyle, defineStyleConfig, extendTheme, ThemeOverride} from "@chakra-ui/react";
 import space from "@/utils/chakra/space";
 
 export const colorScheme = "blue";
@@ -10,6 +10,14 @@ const theme = extendTheme({
                 maxW: {base: 'container.lg', lg: 'xl'}
             })
         })
+    },
+    breakpoints: {
+        base: 0,
+        sm: '375px',
+        md: '744px',
+        lg: '1024px',
+        xl: '1440px',
+        '2xl': '1920px'
     },
     space,
     sizes: {
@@ -53,6 +61,6 @@ const theme = extendTheme({
             }
         }
     }
-});
+} satisfies ThemeOverride);
 
 export default theme;
