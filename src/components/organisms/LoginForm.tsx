@@ -3,7 +3,7 @@
 import {useTranslations} from "next-intl";
 import {useFormState} from "react-dom";
 import {login, signup} from "@/app/[locale]/login/actions";
-import {Button, Container, Flex, Heading, Text} from "@chakra-ui/react";
+import {Box, Button, Flex, Heading, Text} from "@chakra-ui/react";
 import InputControl from "@/components/molecules/InputControl";
 import {FormProvider, useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
@@ -68,7 +68,7 @@ export default function LoginForm() {
 
     return (
         <FormProvider {...form}>
-            <Container as="form">
+            <Box as="form">
                 <Heading mb="2rem" as="h2" size="lg">Login</Heading>
 
                 <GoogleLogin width="300px" onSuccess={handleLoginWithGoogle}/>
@@ -108,7 +108,7 @@ export default function LoginForm() {
                 </Flex>
 
                 {errorMessage && <Text mt="2rem" color="red.500">Error: {errorMessage.toLowerCase()}</Text>}
-            </Container>
+            </Box>
         </FormProvider>
     )
 }

@@ -16,16 +16,22 @@ import {
 } from "@chakra-ui/react";
 import Locales from "@/components/molecules/Locales";
 import {useTranslations} from "next-intl";
-import {Link} from "@/navigation";
+import {Link, usePathname} from "@/navigation";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {colorScheme} from "@/utils/chakra/theme";
 import {User} from "@supabase/supabase-js";
 import LogoutButton from "@/components/molecules/LogoutButton";
+import {useEffect} from "react";
 
 export default function HeaderContent({user}: HeaderContentProps) {
     const t = useTranslations('common');
     const {isOpen, onOpen, onClose} = useDisclosure();
     const logoutMessage = t('button.logout');
+    const pathname = usePathname();
+
+    useEffect(() => {
+        onClose();
+    }, [pathname]);
 
     return (
         <>
@@ -94,6 +100,13 @@ export default function HeaderContent({user}: HeaderContentProps) {
                         {user && (
                             <>
                                 <Text>{t('drawer.welcome', {email: user.email})}</Text>
+
+                                <Button as={Link} href="/" colorScheme={colorScheme} variant="link">Home</Button>
+
+                                <Button as={Link} href="/profile" colorScheme={colorScheme} variant="link">
+                                    {t('button.yourProfile')}
+                                </Button>
+
                                 <LogoutButton text={logoutMessage}/>
                             </>
                         )}

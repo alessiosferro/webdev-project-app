@@ -5,7 +5,7 @@ import {logout} from "@/app/[locale]/login/actions";
 const LogoutButton = ({text}: { text: string }) => {
     return (
         <Box display="flex" alignItems="center" as="form" action={logout}>
-            <Button variant="solid"
+            <Button variant={{base: 'link', lg: 'ghost'}}
                     type="submit"
                     colorScheme={colorScheme}>
                 {text}

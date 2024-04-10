@@ -1,7 +1,7 @@
 import {getTranslations} from "next-intl/server";
 import {LocaleParams} from "@/model/locale-params.props";
 import ClientFormProvider from "@/components/providers/ClientFormProvider";
-import {Box, Container} from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 import PostList from "@/components/molecules/PostList";
 import getPosts from "@/utils/supabase/posts";
 import getUser from "@/utils/supabase/user";
@@ -14,13 +14,11 @@ export default async function Home() {
 
     return (
         <ClientFormProvider defaultValues={defaultValues}>
-            <Container>
-                <AddPostFormServer/>
+            <AddPostFormServer/>
 
-                <Box mt="3rem">
-                    <PostList posts={posts}/>
-                </Box>
-            </Container>
+            <Box mt="3rem">
+                <PostList posts={posts}/>
+            </Box>
         </ClientFormProvider>
     )
 }
