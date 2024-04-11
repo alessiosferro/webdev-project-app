@@ -1,19 +1,48 @@
 'use client';
 
-import {Avatar, Box, Flex, LinkBox, LinkOverlay, Text} from "@chakra-ui/react";
+import {
+    Avatar,
+    Box,
+    Flex,
+    IconButton,
+    LinkBox,
+    LinkOverlay,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    Text
+} from "@chakra-ui/react";
 import Post from "@/model/post.model";
-import {Link} from "@/navigation";
+import {Link, useRouter} from "@/navigation";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from "next/image";
+import {createClient} from "@/utils/supabase/client";
+import {User} from "@supabase/supabase-js";
+import {FiMoreVertical, FiTrash2} from "react-icons/fi";
+import {useParams} from "next/navigation";
 
 dayjs.extend(relativeTime);
 
-const BASE_POST_STORAGE_URL = 'https://loywoviwfotlcofcfoiu.supabase.co/storage/v1/object/public/posts';
-
-const PostCard = ({post}: PostCardProps) => {
-    const fullName = `${post.users.first_name} ${post.users.last_name}`;
+const PostCard = ({post, user}: PostCardProps) => {
+    const fullName = post.users ? `${post.users.first_name} ${post.users.last_name}` : 'Anon';
     const timeFromNow = dayjs(post.created_at).fromNow();
+    const supabase = createClient();
+    const {refresh} = useRouter();
+
+    const params = useParams();
+
+    const postId = +(params.postId as string);
+
+
+    const handleDeletePost = async () => {
+        await supabase.from('posts')
+            .delete()
+            .eq('id', post.id);
+
+        refresh();
+    }
 
     return (
         <LinkBox as='article'
@@ -24,42 +53,72 @@ const PostCard = ({post}: PostCardProps) => {
                  borderWidth='.1rem'
                  rounded='md'>
             <Flex gap="1.5rem">
-                <Avatar size="lg" name={fullName} src={post.users.image_url}/>
+                <Avatar flexShrink={0} size="lg" name={fullName} src={post.users?.image_url}/>
 
-                <Flex gap=".5rem" direction="column">
-                    <Flex align="center" gap="1rem">
-                        <Text fontWeight="bold">{fullName}</Text>
+                <Flex flex={1} justify="space-between">
+                    <Flex gap=".5rem" direction="column">
+                        <Flex align="center" gap="1rem">
+                            <Text fontWeight="bold">{fullName}</Text>
 
-                        <Text display="flex" gap="1rem" color="gray.500">
-                            <Box as="span" display={{base: 'none', md: 'block'}}>{post.users.email}</Box>
-                            <Box as="span" display={{base: 'none', md: 'block'}}>·</Box>
-                            <Box as="time" dateTime={post.created_at}>{timeFromNow}</Box>
-                        </Text>
+                            <Text display="flex" gap="1rem" color="gray.500">
+                                <Box as="span" display={{base: 'none', md: 'block'}}>{post.users?.email}</Box>
+                                <Box as="span" display={{base: 'none', md: 'block'}}>·</Box>
+                                <Box as="time" dateTime={post.created_at}>{timeFromNow}</Box>
+                            </Text>
+                        </Flex>
+                        {postId !== post.id ?
+                            <LinkOverlay as={Link}
+                                         href={`/${post.users?.id}/posts/${post.id}`}>
+                                <PostContent post={post}/>
+                            </LinkOverlay> : (
+                                <PostContent post={post}/>
+                            )}
                     </Flex>
-                    <Text>
-                        <LinkOverlay display="flex" flexDirection="column" gap="2rem" as={Link}
-                                     href={`/${post.users.id}/posts/${post.id}`}>
-                            {post.message}
 
-                            {post.image_url && (
-                                <Box mb="2rem">
-                                    <Image
-                                        width={300}
-                                        height={300}
-                                        src={`${BASE_POST_STORAGE_URL}/${post.image_url}`}
-                                        alt=""/>
-                                </Box>)}
-                        </LinkOverlay>
-                    </Text>
+                    {post.user_id === user.id && <Menu>
+                        <MenuButton
+                            as={IconButton}
+                            aria-label='Options'
+                            icon={<FiMoreVertical/>}
+                            variant="ghost"
+                        />
+
+                        <MenuList>
+                            <MenuItem onClick={handleDeletePost}
+                                      color="red"
+                                      icon={<FiTrash2/>}>
+                                Delete Post
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>}
                 </Flex>
+
 
             </Flex>
         </LinkBox>
     )
 }
 
+const PostContent = ({post}: { post: Post }) => {
+    return (
+        <Flex gap="1rem" direction="column">
+            <Text>{post.message}</Text>
+
+            {post.image_url && (
+                <Box mb="2rem">
+                    <Image
+                        width={300}
+                        height={300}
+                        src={post.image_url}
+                        alt=""/>
+                </Box>)}
+        </Flex>
+    )
+}
+
 export interface PostCardProps {
     post: Post;
+    user: User;
 }
 
 export default PostCard;

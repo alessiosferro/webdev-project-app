@@ -40,7 +40,9 @@ export const createPost = async (state: CreatePostState | undefined, formData: F
         } = await supabase.storage.from('posts')
             .upload(`${user.id}/posts/${image.name}`, image, {upsert: true})
 
-        image_url = uploadData?.path || '';
+        image_url = uploadData?.path ?
+            `https://loywoviwfotlcofcfoiu.supabase.co/storage/v1/object/public/posts/${uploadData?.path}`
+            : '';
     }
 
     await supabase.from('posts').insert({

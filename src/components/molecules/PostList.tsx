@@ -1,19 +1,23 @@
 import {Flex} from "@chakra-ui/react";
-import Post from "@/model/post.model";
 import PostCard from "@/components/atoms/PostCard";
+import getPosts from "@/utils/supabase/posts";
+import {User} from "@supabase/supabase-js";
 
-const PostList = ({posts}: PostListProps) => {
+const PostList = async ({user, filterByUserId}: PostListProps) => {
+    const posts = await getPosts(filterByUserId ? user.id : '');
+
     return (
         <Flex direction="column" gap="2rem">
             {posts.map((post, index) => (
-                <PostCard post={post} key={index}/>
+                <PostCard user={user} post={post} key={index}/>
             ))}
         </Flex>
     )
 }
 
 export interface PostListProps {
-    posts: Post[];
+    user: User;
+    filterByUserId?: boolean;
 }
 
 export default PostList;

@@ -1,122 +1,109 @@
 'use client';
 
 import {
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerContent,
-    DrawerHeader,
-    DrawerOverlay,
-    Grid,
-    GridItem,
-    Heading,
+    Flex,
     IconButton,
-    Text,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
     useDisclosure
 } from "@chakra-ui/react";
-import Locales from "@/components/molecules/Locales";
 import {useTranslations} from "next-intl";
-import {Link, usePathname} from "@/navigation";
-import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
+import {Link, usePathname, useRouter} from "@/navigation";
+import {AppUser} from "@/model/user-profile.model";
+import UserProfileButton from "@/components/atoms/UserProfileButton";
+import {FiHome, FiLogOut, FiPlus, FiUser} from "react-icons/fi";
+import {createClient} from "@/utils/supabase/client";
 import {colorScheme} from "@/utils/chakra/theme";
-import {User} from "@supabase/supabase-js";
-import LogoutButton from "@/components/molecules/LogoutButton";
-import {useEffect} from "react";
+import {ReactNode} from "react";
 
-export default function HeaderContent({user}: HeaderContentProps) {
+export default function HeaderContent({user, addPostForm}: HeaderContentProps) {
     const t = useTranslations('common');
-    const {isOpen, onOpen, onClose} = useDisclosure();
     const logoutMessage = t('button.logout');
+    const {push, refresh} = useRouter();
     const pathname = usePathname();
+    const isHome = pathname === '/';
+    const {isOpen: isPostModalOpen, onOpen: openPostModal, onClose: closePostModal} = useDisclosure();
 
-    useEffect(() => {
-        onClose();
-    }, [pathname]);
+    const handleLogout = async () => {
+        const supabase = createClient();
+
+        await supabase.auth.signOut();
+
+        push('/');
+        refresh();
+    }
 
     return (
         <>
-            <Grid columnGap="1rem"
-                  key={user?.id}
-                  templateColumns={{base: 'repeat(4, 1fr)', lg: 'repeat(12, 1fr)'}}
-                  as="header">
-                {user && <GridItem display={{base: 'none', lg: 'flex'}} gap="1rem" alignItems="center" gridColumn="1/5">
-                    <Button as={Link} href="/" colorScheme={colorScheme} variant="ghost">Home</Button>
-
-                    <Button as={Link} href="/profile" colorScheme={colorScheme} variant="ghost">
-                        {t('button.yourProfile')}
-                    </Button>
-
-                    <LogoutButton text={logoutMessage}/>
-                </GridItem>}
-
-                <GridItem gridColumn={{base: "1/4", lg: "5/-5"}}>
-                    <Link href="/">
-                        <Heading textAlign={{lg: 'center'}} as="h1">
-                            SocialRepo
-                        </Heading>
-                    </Link>
-                </GridItem>
-
-                <GridItem alignItems="center"
-                          justifyContent="flex-end"
-                          display={{base: 'none', lg: 'flex'}}
-                          gridColumn={{lg: "10/13"}}>
-                    <Locales/>
-                </GridItem>
-
-                <GridItem justifySelf="flex-end" alignSelf="center" gridColumn="4/5" display={{lg: 'none'}}>
-                    <IconButton colorScheme={colorScheme}
-                                variant="ghost"
-                                icon={<HamburgerIcon fontSize="2rem"/>}
-                                onClick={onOpen}
-                                aria-label={t('button.openSideMenu')}
+            <Flex
+                key={user?.id}
+                justify="space-between"
+                as="header">
+                <Flex gap="1rem">
+                    <IconButton icon={<FiPlus/>}
+                                variant="solid"
+                                borderRadius="full"
+                                onClick={openPostModal}
+                                colorScheme={colorScheme}
+                                aria-label="New post"
                     />
-                </GridItem>
-            </Grid>
 
-            <Drawer onClose={onClose} isOpen={isOpen}>
-                <DrawerOverlay/>
-                <DrawerContent>
-                    <DrawerHeader display="flex" justifyContent="space-between" alignItems="center"
-                                  borderBottomWidth=".1rem">
-                        {t('drawer.title')}
+                    {!isHome && <IconButton
+                        variant="ghost"
+                        aria-label="Home"
+                        fontSize="2rem"
+                        as={Link}
+                        href="/"
+                        colorScheme={colorScheme}
+                        icon={<FiHome/>}
+                    />}
+                </Flex>
 
-                        <IconButton colorScheme={colorScheme}
-                                    variant="ghost"
-                                    icon={<CloseIcon/>}
-                                    aria-label={t('button.closeSideMenu')}
-                                    onClick={onClose}
+                {user &&
 
-                        />
-                    </DrawerHeader>
+                    <Menu>
+                        <MenuButton>
+                            <UserProfileButton showFullName={false} user={user}/>
+                        </MenuButton>
 
-                    <DrawerBody display="flex"
-                                alignItems="flex-start"
-                                flexDirection="column"
-                                gap="1.5rem"
-                                mt="1rem">
-                        <Locales showLabel/>
+                        <MenuList>
+                            <MenuItem icon={<FiUser/>}
+                                      href="/profile"
+                                      as={Link}>
+                                {t('button.yourProfile')}
+                            </MenuItem>
 
-                        {user && (
-                            <>
-                                <Text>{t('drawer.welcome', {email: user.email})}</Text>
+                            <MenuItem onClick={handleLogout} icon={<FiLogOut fontSize="1.6rem"/>} color="red.500">
+                                {t('button.logout')}
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+                }
+            </Flex>
 
-                                <Button as={Link} href="/" colorScheme={colorScheme} variant="link">Home</Button>
-
-                                <Button as={Link} href="/profile" colorScheme={colorScheme} variant="link">
-                                    {t('button.yourProfile')}
-                                </Button>
-
-                                <LogoutButton text={logoutMessage}/>
-                            </>
-                        )}
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
+            <Modal isOpen={isPostModalOpen} onClose={closePostModal}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>Aggiungi nuovo post</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody onSubmit={() => closePostModal()}>
+                        {addPostForm}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </>
     )
 }
 
 interface HeaderContentProps {
-    user: User | null;
+    user: AppUser | null;
+    addPostForm: ReactNode;
 }

@@ -16,10 +16,12 @@ const PostPage = async ({params}: {
         postId
     } = params;
 
+    const user = await getUser();
+
     const client = createClient();
 
     const post = await client.from('posts')
-        .select()
+        .select('*, users(*)')
         .eq('user_id', userId)
         .eq('id', postId)
         .single<Post>();
@@ -58,10 +60,10 @@ const PostPage = async ({params}: {
     return (
         <ClientFormProvider defaultValues={defaultValues}>
             <Container>
-                <PostCard post={post.data}/>
+                <PostCard user={user} post={post.data}/>
 
                 {postComments.map(post => (
-                    <PostCard post={post} key={post.id}/>
+                    <PostCard user={user} post={post} key={post.id}/>
                 ))}
 
             </Container>

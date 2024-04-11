@@ -1,4 +1,4 @@
-import User from "@/model/user.model";
+import UserProfile from "@/model/user-profile.model";
 
 export default interface Post {
     id: number;
@@ -8,5 +8,5 @@ export default interface Post {
     city_id?: string;
     user_id?: string;
     message: string
-    users: User;
+    users: UserProfile;
 }

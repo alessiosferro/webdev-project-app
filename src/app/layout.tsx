@@ -1,8 +1,11 @@
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, Suspense} from "react";
 import AppProviders from "@/components/providers/AppProviders";
 import {NextIntlClientProvider, useMessages} from "next-intl";
-import {Flex} from "@chakra-ui/react";
+import {Container, Flex} from "@chakra-ui/react";
 import {GoogleOAuthProvider} from "@react-oauth/google";
+import Header from "@/components/molecules/Header/Header";
+import Loading from "@/app/[locale]/loading";
+import Footer from "@/components/molecules/Footer";
 
 export default function RootLayout({children, params: {locale}}: PropsWithChildren<{
     params: { locale: string }
@@ -20,7 +23,13 @@ export default function RootLayout({children, params: {locale}}: PropsWithChildr
                 <body>
                 <AppProviders>
                     <Flex minH="100dvh" direction="column">
-                        {children}
+                        <Header/>
+                        <Container as="main" py={{base: '2rem', lg: '4rem'}} flex={1}>
+                            <Suspense fallback={<Loading/>}>
+                                {children}
+                            </Suspense>
+                        </Container>
+                        <Footer/>
                     </Flex>
                 </AppProviders>
                 </body>

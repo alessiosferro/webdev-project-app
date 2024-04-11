@@ -19,7 +19,7 @@ const TextareaControl = (props: Omit<CommonControlProps, 'type'>) => {
         <Controller rules={rules}
                     name={name}
                     disabled={disabled}
-                    render={({field: {onChange, value, onBlur, ref}, fieldState: {error}}) => (
+                    render={({field, fieldState: {error}}) => (
                         <FormControl isInvalid={!!error}>
                             {labelVisuallyHidden ? (
                                 <VisuallyHidden>
@@ -28,11 +28,8 @@ const TextareaControl = (props: Omit<CommonControlProps, 'type'>) => {
                             ) : <FormLabel>{label}</FormLabel>}
 
                             <Textarea placeholder={placeholder}
-                                      onBlur={onBlur}
-                                      name={name}
-                                      onChange={onChange}
-                                      value={value}
-                                      ref={ref}></Textarea>
+                                      {...field}
+                            />
 
                             {error && <FormErrorMessage>{error.message}</FormErrorMessage>}
                             {helperText && !error && <FormHelperText>{helperText}</FormHelperText>}

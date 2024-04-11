@@ -1,16 +1,31 @@
-import {defineStyle, defineStyleConfig, extendTheme, ThemeOverride} from "@chakra-ui/react";
+import {createMultiStyleConfigHelpers, defineStyleConfig, extendTheme, ThemeOverride} from "@chakra-ui/react";
 import space from "@/utils/chakra/space";
+import {menuAnatomy} from "@chakra-ui/anatomy";
 
 export const colorScheme = "blue";
 
-const theme = extendTheme({
-    components: {
-        Container: defineStyleConfig({
-            baseStyle: defineStyle({
-                maxW: {base: 'container.lg', lg: 'xl'}
-            })
+const {
+    defineMultiStyleConfig,
+    definePartsStyle
+} = createMultiStyleConfigHelpers(menuAnatomy.keys);
+
+const components = {
+    Container: defineStyleConfig({
+        baseStyle: {
+            maxW: {base: 'container.xl', lg: 'container.md'}
+        }
+    }),
+    Menu: defineMultiStyleConfig({
+        baseStyle: definePartsStyle({
+            item: {
+                py: '1rem'
+            }
         })
-    },
+    })
+}
+
+const theme = extendTheme({
+    components,
     breakpoints: {
         base: 0,
         sm: '375px',
@@ -58,8 +73,12 @@ const theme = extendTheme({
             },
             body: {
                 fontSize: '1.6rem'
+            },
+
+            'span.chakra-menu__icon-wrapper > svg': {
+                fontSize: "2rem"
             }
-        }
+        },
     }
 } satisfies ThemeOverride);
 
