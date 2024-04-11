@@ -75,7 +75,7 @@ const PostCard = ({post, user}: PostCardProps) => {
                             )}
                     </Flex>
 
-                    {post.user_id === user.id && <Menu>
+                    {post.user_id === user?.id && <Menu placement="bottom-end">
                         <MenuButton
                             as={IconButton}
                             aria-label='Options'
@@ -118,7 +118,7 @@ const PostContent = ({post}: { post: Post }) => {
 
 export interface PostCardProps {
     post: Post;
-    user: User;
+    user: User | null;
 }
 
 export default PostCard;

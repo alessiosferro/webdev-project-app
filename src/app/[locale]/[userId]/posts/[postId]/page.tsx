@@ -2,7 +2,6 @@ import {createClient} from "@/utils/supabase/server";
 import PostCard from "@/components/atoms/PostCard";
 import Post from "@/model/post.model";
 import {notFound} from "next/navigation";
-import {Container} from "@chakra-ui/react";
 import getUser from "@/utils/supabase/user";
 import {revalidatePath} from "next/cache";
 import ClientFormProvider from "@/components/providers/ClientFormProvider";
@@ -48,7 +47,7 @@ const PostPage = async ({params}: {
         const user = await getUser();
 
         await supabase.from('posts').insert({
-            user_id: user.id,
+            user_id: user?.id,
             message,
             post_id: post.data.id,
         });
@@ -59,14 +58,12 @@ const PostPage = async ({params}: {
 
     return (
         <ClientFormProvider defaultValues={defaultValues}>
-            <Container>
-                <PostCard user={user} post={post.data}/>
+            <PostCard user={user} post={post.data}/>
 
-                {postComments.map(post => (
-                    <PostCard user={user} post={post} key={post.id}/>
-                ))}
+            {postComments.map(post => (
+                <PostCard user={user} post={post} key={post.id}/>
+            ))}
 
-            </Container>
         </ClientFormProvider>
     )
 }

@@ -15,7 +15,7 @@ export default async function uploadProfileImage(formData: FormData) {
     const {error} = await supabase
         .storage
         .from('profile-pictures')
-        .update(`${user.id}/profile-image.jpg`, file, {
+        .update(`${user?.id}/profile-image.jpg`, file, {
             cacheControl: '3600',
             upsert: false
         });

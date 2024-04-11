@@ -24,9 +24,8 @@ import {createClient} from "@/utils/supabase/client";
 import {colorScheme} from "@/utils/chakra/theme";
 import {ReactNode} from "react";
 
-export default function HeaderContent({user, addPostForm}: HeaderContentProps) {
+export default function Header({user, addPostForm}: HeaderContentProps) {
     const t = useTranslations('common');
-    const logoutMessage = t('button.logout');
     const {push, refresh} = useRouter();
     const pathname = usePathname();
     const isHome = pathname === '/';
@@ -40,6 +39,8 @@ export default function HeaderContent({user, addPostForm}: HeaderContentProps) {
         push('/');
         refresh();
     }
+
+    if (!user) return null;
 
     return (
         <>
@@ -67,26 +68,23 @@ export default function HeaderContent({user, addPostForm}: HeaderContentProps) {
                     />}
                 </Flex>
 
-                {user &&
+                <Menu placement="bottom-end">
+                    <MenuButton>
+                        <UserProfileButton as="div" showFullName={false} user={user}/>
+                    </MenuButton>
 
-                    <Menu>
-                        <MenuButton>
-                            <UserProfileButton showFullName={false} user={user}/>
-                        </MenuButton>
+                    <MenuList>
+                        <MenuItem icon={<FiUser/>}
+                                  href="/profile"
+                                  as={Link}>
+                            {t('button.yourProfile')}
+                        </MenuItem>
 
-                        <MenuList>
-                            <MenuItem icon={<FiUser/>}
-                                      href="/profile"
-                                      as={Link}>
-                                {t('button.yourProfile')}
-                            </MenuItem>
-
-                            <MenuItem onClick={handleLogout} icon={<FiLogOut fontSize="1.6rem"/>} color="red.500">
-                                {t('button.logout')}
-                            </MenuItem>
-                        </MenuList>
-                    </Menu>
-                }
+                        <MenuItem onClick={handleLogout} icon={<FiLogOut fontSize="1.6rem"/>} color="red.500">
+                            {t('button.logout')}
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
             </Flex>
 
             <Modal isOpen={isPostModalOpen} onClose={closePostModal}>

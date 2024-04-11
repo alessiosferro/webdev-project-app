@@ -7,7 +7,11 @@ export default async function getUser(preventRedirectEffect?: boolean) {
 
     const {data, error} = await supabase.auth.getUser();
 
-    if (!preventRedirectEffect && (!data || error)) {
+    if ((!data || error)) {
+        if (preventRedirectEffect) {
+            return null;
+        }
+
         redirect('/login');
     }
 

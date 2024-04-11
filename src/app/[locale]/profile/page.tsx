@@ -9,6 +9,8 @@ export default async function ProfilePage({params: {locale}}: LocaleParams) {
     const t = await getTranslations({locale, namespace: 'common'});
 
     const user = await getUser();
+    
+    if (!user) return null;
 
     const imageUrl = user.profile?.image_url || '';
 

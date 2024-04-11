@@ -4,7 +4,7 @@ import getPosts from "@/utils/supabase/posts";
 import {User} from "@supabase/supabase-js";
 
 const PostList = async ({user, filterByUserId}: PostListProps) => {
-    const posts = await getPosts(filterByUserId ? user.id : '');
+    const posts = await getPosts(user && filterByUserId ? user.id : '');
 
     return (
         <Flex direction="column" gap="2rem">
@@ -16,7 +16,7 @@ const PostList = async ({user, filterByUserId}: PostListProps) => {
 }
 
 export interface PostListProps {
-    user: User;
+    user: User | null;
     filterByUserId?: boolean;
 }
 

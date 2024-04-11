@@ -38,7 +38,7 @@ export const createPost = async (state: CreatePostState | undefined, formData: F
         const {
             data: uploadData
         } = await supabase.storage.from('posts')
-            .upload(`${user.id}/posts/${image.name}`, image, {upsert: true})
+            .upload(`${user?.id}/posts/${image.name}`, image, {upsert: true})
 
         image_url = uploadData?.path ?
             `https://loywoviwfotlcofcfoiu.supabase.co/storage/v1/object/public/posts/${uploadData?.path}`
@@ -46,7 +46,7 @@ export const createPost = async (state: CreatePostState | undefined, formData: F
     }
 
     await supabase.from('posts').insert({
-        user_id: user.id,
+        user_id: user?.id,
         ...(image_url && {image_url}),
         disruption_id,
         city_id,

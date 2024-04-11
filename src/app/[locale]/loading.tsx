@@ -1,9 +1,7 @@
-import {Container, Text} from "@chakra-ui/react";
+import {Text} from "@chakra-ui/react";
 
 export default function Loading() {
     return (
-        <Container>
-            <Text>Loading...</Text>
-        </Container>
+        <Text>Loading...</Text>
     );
 }
