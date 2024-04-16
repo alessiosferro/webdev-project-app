@@ -14,23 +14,23 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Post from "@/model/post.model";
-import { Link, useRouter } from "@/navigation";
+import {Link, useRouter} from "@/navigation";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
-import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
-import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
-import { useParams } from "next/navigation";
-import { getUserName } from "@/utils";
+import {createClient} from "@/utils/supabase/client";
+import {User} from "@supabase/supabase-js";
+import {FiMoreVertical, FiTrash2} from "react-icons/fi";
+import {useParams} from "next/navigation";
+import {getUserName} from "@/utils";
 
 dayjs.extend(relativeTime);
 
-const PostCard = ({ post, user }: PostCardProps) => {
+const PostCard = ({post, user}: PostCardProps) => {
   const fullName = getUserName(post.users);
   const timeFromNow = dayjs(post.created_at).fromNow();
   const supabase = createClient();
-  const { refresh } = useRouter();
+  const {refresh} = useRouter();
 
   const params = useParams();
 
@@ -48,7 +48,7 @@ const PostCard = ({ post, user }: PostCardProps) => {
       display="flex"
       gap="1rem"
       flexDirection="column"
-      p="1rem"
+      p="1.5rem 2rem 2rem"
       borderWidth=".1rem"
       rounded="md"
     >
@@ -61,15 +61,15 @@ const PostCard = ({ post, user }: PostCardProps) => {
         />
 
         <Flex flex={1} justify="space-between">
-          <Flex gap=".5rem" direction="column">
+          <Flex flex={1} gap=".5rem" direction="column">
             <Flex align="center" gap="1rem">
               <Text fontWeight="bold">{fullName}</Text>
 
               <Text display="flex" gap="1rem" color="gray.500">
-                <Box as="span" display={{ base: "none", md: "block" }}>
+                <Box as="span" display={{base: "none", md: "block"}}>
                   {post.users?.email}
                 </Box>
-                <Box as="span" display={{ base: "none", md: "block" }}>
+                <Box as="span" display={{base: "none", md: "block"}}>
                   ·
                 </Box>
                 <Box as="time" dateTime={post.created_at}>
@@ -82,32 +82,34 @@ const PostCard = ({ post, user }: PostCardProps) => {
                 as={Link}
                 href={`/${post.users?.id}/posts/${post.id}`}
               >
-                <PostContent post={post} />
+                <PostContent post={post}/>
               </LinkOverlay>
             ) : (
-              <PostContent post={post} />
+              <PostContent post={post}/>
             )}
           </Flex>
 
           {post.user_id === user?.id && (
-            <Menu placement="bottom-end">
-              <MenuButton
-                as={IconButton}
-                aria-label="Options"
-                icon={<FiMoreVertical />}
-                variant="ghost"
-              />
+            <Box position="absolute" right="2rem">
+              <Menu placement="bottom-end">
+                <MenuButton
+                  as={IconButton}
+                  aria-label="Options"
+                  icon={<FiMoreVertical/>}
+                  variant="ghost"
+                />
 
-              <MenuList>
-                <MenuItem
-                  onClick={handleDeletePost}
-                  color="red"
-                  icon={<FiTrash2 />}
-                >
-                  Delete Post
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                <MenuList>
+                  <MenuItem
+                    onClick={handleDeletePost}
+                    color="red"
+                    icon={<FiTrash2/>}
+                  >
+                    Delete Post
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Box>
           )}
         </Flex>
       </Flex>
@@ -115,14 +117,14 @@ const PostCard = ({ post, user }: PostCardProps) => {
   );
 };
 
-const PostContent = ({ post }: { post: Post }) => {
+const PostContent = ({post}: { post: Post }) => {
   return (
     <Flex gap="1rem" direction="column">
       <Text>{post.message}</Text>
 
       {post.image_url && (
-        <Box mb="2rem">
-          <Image width={300} height={300} src={post.image_url} alt="" />
+        <Box bgColor="black" position="relative" height="60rem">
+          <Image sizes="" objectFit="contain" objectPosition="center" fill src={post.image_url} alt=""/>
         </Box>
       )}
     </Flex>

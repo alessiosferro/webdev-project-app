@@ -1,21 +1,16 @@
-import {
-  createMultiStyleConfigHelpers,
-  defineStyleConfig,
-  extendTheme,
-  ThemeOverride,
-} from "@chakra-ui/react";
+import {createMultiStyleConfigHelpers, defineStyleConfig, extendTheme, ThemeOverride,} from "@chakra-ui/react";
 import space from "@/utils/chakra/space";
-import { menuAnatomy } from "@chakra-ui/anatomy";
+import {menuAnatomy} from "@chakra-ui/anatomy";
 
 export const colorScheme = "blue";
 
-const { defineMultiStyleConfig, definePartsStyle } =
+const {defineMultiStyleConfig, definePartsStyle} =
   createMultiStyleConfigHelpers(menuAnatomy.keys);
 
 const components = {
   Container: defineStyleConfig({
     baseStyle: {
-      maxW: { base: "container.xl", lg: "container.md" },
+      maxW: {base: "container.xl", lg: "container.md"},
     },
   }),
   Menu: defineMultiStyleConfig({
@@ -24,7 +19,7 @@ const components = {
         py: "1rem",
       },
     }),
-  }),
+  })
 };
 
 const theme = extendTheme({

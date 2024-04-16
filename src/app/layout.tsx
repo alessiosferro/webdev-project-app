@@ -17,33 +17,35 @@ export default function RootLayout({
 
   return (
     <html lang={locale}>
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <GoogleOAuthProvider
-        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
-      >
-        <body>
-        <AppProviders>
+    <body>
+    <AppProviders>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
+        >
           <UserProvider>
             {(user) => (
-              <Container
-                py="2rem"
-                display="flex"
-                minH="100dvh"
-                flexDirection="column"
-                gap="2rem"
-              >
+              <>
                 <Header addPostForm={<AddPostFormServer/>} user={user}/>
 
-                <Box flex={1} mt="2rem" as="main">
-                  {children}
-                </Box>
-              </Container>
+                <Container
+                  display="flex"
+                  minH="100dvh"
+                  flexDirection="column"
+                >
+
+
+                  <Box flex={1} pt="2rem" pb="4rem" as="main">
+                    {children}
+                  </Box>
+                </Container>
+              </>
             )}
           </UserProvider>
-        </AppProviders>
-        </body>
-      </GoogleOAuthProvider>
-    </NextIntlClientProvider>
+        </GoogleOAuthProvider>
+      </NextIntlClientProvider>
+    </AppProviders>
+    </body>
     </html>
   );
 }

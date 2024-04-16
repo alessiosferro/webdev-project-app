@@ -1,20 +1,20 @@
 "use client";
 
 import TextareaControl from "@/components/molecules/TextareaControl";
-import { Button, Flex } from "@chakra-ui/react";
-import { colorScheme } from "@/utils/chakra/theme";
+import {Button, Flex} from "@chakra-ui/react";
+import {colorScheme} from "@/utils/chakra/theme";
 import SelectControl from "@/components/molecules/SelectControl";
 import InputFilePreview from "@/components/molecules/InputFilePreview";
-import { useEffect, useRef, useState } from "react";
-import { SelectOption } from "@/model/types";
-import { useTranslations } from "next-intl";
+import {useEffect, useRef, useState} from "react";
+import {SelectOption} from "@/model/types";
+import {useTranslations} from "next-intl";
 import useValidationRules from "@/hooks/use-validation-rules";
-import { useFormState } from "react-dom";
-import { createPost } from "@/utils/actions";
-import { FormProvider, useForm } from "react-hook-form";
+import {useFormState} from "react-dom";
+import {createPost} from "@/utils/actions";
+import {FormProvider, useForm} from "react-hook-form";
 
 const AddPostForm = (props: AddPostFormProps) => {
-  const { cities, disruptions } = props;
+  const {cities, disruptions} = props;
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const t = useTranslations("common");
@@ -24,12 +24,12 @@ const AddPostForm = (props: AddPostFormProps) => {
     errors: {},
   });
 
-  const { message } = createPostState;
+  const {message} = createPostState;
 
   const fileListState = useState<FileList | null>(null);
   const [, setFileList] = fileListState;
 
-  const { requiredField } = useValidationRules();
+  const {requiredField} = useValidationRules();
 
   const form = useForm({
     defaultValues: {
@@ -91,23 +91,25 @@ const AddPostForm = (props: AddPostFormProps) => {
           name="image"
         />
 
-        <Flex gap="1rem" w="100%">
+        <Flex direction={{base: "column", md: "row"}} gap="1rem" w="100%">
           <Button
             flex={1}
+            p="1rem"
             type="reset"
             colorScheme={colorScheme}
             variant="outline"
           >
-            {t("button.reset")}
+            Reset
           </Button>
 
           <Button
             flex={1}
+            p="1rem"
             type="submit"
             colorScheme={colorScheme}
             variant="solid"
           >
-            {t("button.addNewPost")}
+            Invia
           </Button>
         </Flex>
       </Flex>

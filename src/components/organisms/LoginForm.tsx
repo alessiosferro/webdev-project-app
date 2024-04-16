@@ -96,18 +96,18 @@ export default function LoginForm() {
             variant="solid"
             type="submit"
             colorScheme={colorScheme}
-            formAction={signupAction}
-          >
-            {t("button.register")}
-          </Button>
-
-          <Button
-            variant="outline"
-            type="submit"
-            colorScheme={colorScheme}
             formAction={loginAction}
           >
             {t("button.login")}
+          </Button>
+
+          <Button
+            variant="solid"
+            type="submit"
+            colorScheme={colorScheme}
+            formAction={signupAction}
+          >
+            {t("button.register")}
           </Button>
         </Flex>
 

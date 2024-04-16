@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  Box,
+  Container,
   Flex,
   IconButton,
   Menu,
@@ -39,51 +41,61 @@ export default function Header({user, addPostForm}: HeaderContentProps) {
   if (!user) return null;
 
   return (
-    <form>
-      <Flex key={user?.id} justify="space-between" as="header">
-        <Flex gap="1rem">
-          <IconButton
-            type="button"
-            icon={<FiPlus/>}
-            variant="solid"
-            borderRadius="full"
-            onClick={openPostModal}
-            colorScheme={colorScheme}
-            aria-label="New post"
-          />
-
-          {!isHome && (
+    <Box as="form"
+         position="sticky"
+         bgColor="white"
+         zIndex="modal"
+         py="2rem"
+         boxShadow="0 0 .6rem .3rem rgba(0,0,0,.05)"
+         top={0}>
+      <Container>
+        <Flex key={user?.id}
+              justify="space-between"
+              as="header">
+          <Flex gap="2rem">
             <IconButton
               type="button"
-              variant="ghost"
-              aria-label="Home"
-              fontSize="2rem"
-              as={Link}
-              href="/"
+              icon={<FiPlus/>}
+              variant="solid"
+              borderRadius="full"
+              onClick={openPostModal}
               colorScheme={colorScheme}
-              icon={<FiHome/>}
+              aria-label="New post"
             />
-          )}
+
+            {!isHome && (
+              <IconButton
+                type="button"
+                variant="ghost"
+                aria-label="Home"
+                fontSize="2rem"
+                as={Link}
+                href="/"
+                colorScheme={colorScheme}
+                icon={<FiHome/>}
+              />
+            )}
+          </Flex>
+
+          <Menu placement="bottom-end">
+            <MenuButton type="button">
+              <UserProfileButton as="div" showFullName={false} user={user}/>
+            </MenuButton>
+
+            <MenuList>
+              <MenuItem icon={<FiUser/>} href="/profile" as={Link}>
+                {t("button.yourProfile")}
+              </MenuItem>
+
+              <LogoutButton>
+                {t("button.logout")}
+              </LogoutButton>
+            </MenuList>
+          </Menu>
         </Flex>
+      </Container>
 
-        <Menu placement="bottom-end">
-          <MenuButton type="button">
-            <UserProfileButton as="div" showFullName={false} user={user}/>
-          </MenuButton>
-
-          <MenuList>
-            <MenuItem icon={<FiUser/>} href="/profile" as={Link}>
-              {t("button.yourProfile")}
-            </MenuItem>
-
-            <LogoutButton>
-              {t("button.logout")}
-            </LogoutButton>
-          </MenuList>
-        </Menu>
-      </Flex>
-
-      <Modal isOpen={isPostModalOpen} onClose={closePostModal}>
+      <Modal size={{base: "full", md: "lg"}} isOpen={isPostModalOpen} onClose={closePostModal}>
         <ModalOverlay/>
         <ModalContent>
           <ModalHeader>Aggiungi nuovo post</ModalHeader>
@@ -91,7 +103,7 @@ export default function Header({user, addPostForm}: HeaderContentProps) {
           <ModalBody onSubmit={() => closePostModal()}>{addPostForm}</ModalBody>
         </ModalContent>
       </Modal>
-    </form>
+    </Box>
   );
 }
 

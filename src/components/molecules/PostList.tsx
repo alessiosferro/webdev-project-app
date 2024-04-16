@@ -7,7 +7,7 @@ const PostList = async ({user, filterByUserId}: PostListProps) => {
   const posts = await getPosts(user && filterByUserId ? user.id : "");
 
   return (
-    <Flex direction="column" gap="2rem">
+    <Flex direction="column" gap="3rem">
       {posts.map((post, index) => (
         <PostCard user={user} post={post} key={post.id}/>
       ))}
