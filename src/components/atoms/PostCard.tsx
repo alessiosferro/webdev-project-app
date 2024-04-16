@@ -22,11 +22,12 @@ import {createClient} from "@/utils/supabase/client";
 import {User} from "@supabase/supabase-js";
 import {FiMoreVertical, FiTrash2} from "react-icons/fi";
 import {useParams} from "next/navigation";
+import {getUserName} from "@/utils";
 
 dayjs.extend(relativeTime);
 
 const PostCard = ({post, user}: PostCardProps) => {
-    const fullName = post.users ? `${post.users.first_name} ${post.users.last_name}` : 'Anon';
+    const fullName = getUserName(post.users);
     const timeFromNow = dayjs(post.created_at).fromNow();
     const supabase = createClient();
     const {refresh} = useRouter();
