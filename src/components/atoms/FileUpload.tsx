@@ -1,42 +1,45 @@
-import {Box} from "@chakra-ui/react";
-import {RefObject, useEffect} from "react";
+import { Box } from "@chakra-ui/react";
+import { RefObject, useEffect } from "react";
 
 const FileUpload = (props: FileUploadProps) => {
-    const {
-        onFileChange,
-        inputRef,
-        accept
-    } = props;
+  const { onFileChange, inputRef, accept } = props;
 
-    useEffect(() => {
-        if (!inputRef.current) return;
+  useEffect(() => {
+    if (!inputRef.current) return;
 
-        const element = inputRef.current;
+    const element = inputRef.current;
 
-        const onInputChange: EventListener = (ev) => {
-            const file = (ev.currentTarget as HTMLInputElement).files?.[0];
+    const onInputChange: EventListener = (ev) => {
+      const file = (ev.currentTarget as HTMLInputElement).files?.[0];
 
-            if (!file) return;
+      if (!file) return;
 
-            onFileChange(file);
-        }
+      onFileChange(file);
+    };
 
-        element.addEventListener('change', onInputChange);
+    element.addEventListener("change", onInputChange);
 
-        return () => {
-            element.removeEventListener('change', onInputChange);
-        }
-    }, []);
+    return () => {
+      element.removeEventListener("change", onInputChange);
+    };
+  }, []);
 
-    return (
-        <Box as="input" name="file" accept={accept} display="none" type="file" ref={inputRef}/>
-    );
-}
+  return (
+    <Box
+      as="input"
+      name="file"
+      accept={accept}
+      display="none"
+      type="file"
+      ref={inputRef}
+    />
+  );
+};
 
 export interface FileUploadProps {
-    onFileChange: (file: File) => void;
-    inputRef: RefObject<HTMLInputElement>;
-    accept: string;
+  onFileChange: (file: File) => void;
+  inputRef: RefObject<HTMLInputElement>;
+  accept: string;
 }
 
 export default FileUpload;

@@ -1,1 +1,51 @@
-{"common":{"button":{"addNewPost":"Crea nuovo post","closeSideMenu":"Chiudi menu laterale","login":"Accedi","logout":"Logout","openSideMenu":"Apri menu laterale","register":"Registrati","reset":"Reimposta tutti i valori","upload":"Carica","uploadPhoto":"Carica foto","yourProfile":"Il tuo profilo"},"disruption":{"abandonedWaste":"Rifiuti abbandonati","asphaltPothole":"Buca dell'asfalto","unprunedVegetation":"Vegetazione non potata"},"drawer":{"title":"Menu laterale","welcome":"Ciao, {email} !"},"error":{"generic":"Si è verificato un errore. Per favore, riprova più tardi.","noun":"Errore"},"footer":{"copy":"Sviluppato con <3 da"},"input":{"chooseAnOption":"Scegli un'opzione..."},"label":{"changeLanguage":"Cambia lingua","city":"Città","disruption":"Problema","email":"Email","message":"Messaggio","password":"Password","uploadPhoto":"Carica una foto"},"placeholder":{"email":"Inserisci la tua email","enterMessage":"Inserisci un messaggio...","password":"Inserisci la tua password"},"profile":{"accountCreatedAt":"Account creato alle {createdAt}"},"seo":{"dashboard":"Dashboard","login":"Login"},"success":{"signUp":{"description":"Controlla la tua casella di posta per la verifica della tua mail.","title":"Verifica email"}},"validation":{"required":"Campo obbligatorio"}}}
+{
+  "common": {
+    "button": {
+      "addNewPost": "Crea nuovo post",
+      "closeSideMenu": "Chiudi menu laterale",
+      "login": "Accedi",
+      "logout": "Logout",
+      "openSideMenu": "Apri menu laterale",
+      "register": "Registrati",
+      "reset": "Reimposta tutti i valori",
+      "upload": "Carica",
+      "uploadPhoto": "Carica foto",
+      "yourProfile": "Il tuo profilo"
+    },
+    "disruption": {
+      "abandonedWaste": "Rifiuti abbandonati",
+      "asphaltPothole": "Buca dell'asfalto",
+      "unprunedVegetation": "Vegetazione non potata"
+    },
+    "drawer": { "title": "Menu laterale", "welcome": "Ciao, {email} !" },
+    "error": {
+      "generic": "Si è verificato un errore. Per favore, riprova più tardi.",
+      "noun": "Errore"
+    },
+    "footer": { "copy": "Sviluppato con <3 da" },
+    "input": { "chooseAnOption": "Scegli un'opzione..." },
+    "label": {
+      "changeLanguage": "Cambia lingua",
+      "city": "Città",
+      "disruption": "Problema",
+      "email": "Email",
+      "message": "Messaggio",
+      "password": "Password",
+      "uploadPhoto": "Carica una foto"
+    },
+    "placeholder": {
+      "email": "Inserisci la tua email",
+      "enterMessage": "Inserisci un messaggio...",
+      "password": "Inserisci la tua password"
+    },
+    "profile": { "accountCreatedAt": "Account creato alle {createdAt}" },
+    "seo": { "dashboard": "Dashboard", "login": "Login" },
+    "success": {
+      "signUp": {
+        "description": "Controlla la tua casella di posta per la verifica della tua mail.",
+        "title": "Verifica email"
+      }
+    },
+    "validation": { "required": "Campo obbligatorio" }
+  }
+}

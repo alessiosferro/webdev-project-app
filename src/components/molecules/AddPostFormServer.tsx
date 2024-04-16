@@ -1,18 +1,15 @@
-import {createClient} from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import mapToOptions from "@/utils/mapToOptions";
 import AddPostForm from "@/components/molecules/AddPostForm";
 
 export default async function AddPostFormServer() {
-    const client = createClient();
+  const client = createClient();
 
-    const citiesResponse = await client.from('cities').select('*');
-    const disruptionsResponse = await client.from('disruptions').select('*');
+  const citiesResponse = await client.from("cities").select("*");
+  const disruptionsResponse = await client.from("disruptions").select("*");
 
-    const cities = mapToOptions(citiesResponse.data);
-    const disruptions = mapToOptions(disruptionsResponse.data);
+  const cities = mapToOptions(citiesResponse.data);
+  const disruptions = mapToOptions(disruptionsResponse.data);
 
-    return (
-        <AddPostForm cities={cities}
-                     disruptions={disruptions}/>
-    );
+  return <AddPostForm cities={cities} disruptions={disruptions} />;
 }

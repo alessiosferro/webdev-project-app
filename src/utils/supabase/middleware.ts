@@ -1,52 +1,52 @@
-import {type CookieOptions, createServerClient} from '@supabase/ssr'
-import {type NextRequest} from 'next/server'
-import createIntlMiddleware from 'next-intl/middleware';
-import {defaultLocale, localePrefix, locales} from "@/navigation";
+import { type CookieOptions, createServerClient } from "@supabase/ssr";
+import { type NextRequest } from "next/server";
+import createIntlMiddleware from "next-intl/middleware";
+import { defaultLocale, localePrefix, locales } from "@/navigation";
 
 export async function updateSession(request: NextRequest) {
-    const response = createIntlMiddleware({
-        locales,
-        localePrefix,
-        defaultLocale
-    })(request);
+  const response = createIntlMiddleware({
+    locales,
+    localePrefix,
+    defaultLocale,
+  })(request);
 
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                get(name: string) {
-                    return request.cookies.get(name)?.value
-                },
-                set(name: string, value: string, options: CookieOptions) {
-                    request.cookies.set({
-                        name,
-                        value,
-                        ...options,
-                    });
-                    response.cookies.set({
-                        name,
-                        value,
-                        ...options,
-                    });
-                },
-                remove(name: string, options: CookieOptions) {
-                    request.cookies.set({
-                        name,
-                        value: '',
-                        ...options,
-                    });
-                    response.cookies.set({
-                        name,
-                        value: '',
-                        ...options,
-                    });
-                },
-            },
-        }
-    )
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          });
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          });
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value: "",
+            ...options,
+          });
+          response.cookies.set({
+            name,
+            value: "",
+            ...options,
+          });
+        },
+      },
+    },
+  );
 
-    await supabase.auth.getUser();
+  await supabase.auth.getUser();
 
-    return response;
+  return response;
 }

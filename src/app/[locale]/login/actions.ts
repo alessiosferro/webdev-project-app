@@ -1,93 +1,112 @@
-'use server'
+"use server";
 
-import {revalidatePath} from 'next/cache'
-import {redirect} from 'next/navigation'
-import {createClient} from '@/utils/supabase/server'
-import {z} from 'zod';
+import {revalidatePath} from "next/cache";
+import {redirect} from "next/navigation";
+import {createClient} from "@/utils/supabase/server";
+import {z} from "zod";
+import {CredentialResponse} from "@react-oauth/google";
 
 export async function login(prevState: State | null, formData: FormData) {
-    const supabase = createClient();
+  const supabase = createClient();
 
-    const validatedFields = LoginSchema.safeParse({
-        email: formData.get('email') as string,
-        password: formData.get('password') as string,
-    });
+  const validatedFields = LoginSchema.safeParse({
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  });
 
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: "Invalid fields. Failed to login."
-        }
-    }
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Invalid fields. Failed to login.",
+    };
+  }
 
-    const {error} = await supabase.auth.signInWithPassword(validatedFields.data);
+  const {error} = await supabase.auth.signInWithPassword(
+    validatedFields.data,
+  );
 
-    if (error) {
-        return {
-            errors: {},
-            message: error.message
-        }
-    }
+  if (error) {
+    return {
+      errors: {},
+      message: error.message,
+    };
+  }
 
-    revalidatePath('/')
-    redirect('/')
+  revalidatePath("/");
+  redirect("/");
+}
+
+export async function loginWithGoogle(response: CredentialResponse) {
+  if (!response.credential) return;
+
+  const supabase = createClient();
+
+  await supabase.auth.signInWithIdToken({
+    provider: "google",
+    token: response.credential,
+  });
+
+  revalidatePath("/");
+  redirect("/");
 }
 
 export async function logout() {
-    const supabase = createClient();
+  const supabase = createClient();
 
-    const {error} = await supabase.auth.signOut();
+  const {error} = await supabase.auth.signOut();
 
-    if (error) {
-        redirect('/error');
-    }
+  if (error) {
+    redirect("/error");
+  }
 
-    revalidatePath('/login');
-    redirect('/login');
+  revalidatePath("/login");
+  redirect("/login");
 }
 
 export async function signup(prevState: State | null, formData: FormData) {
-    const supabase = createClient();
+  const supabase = createClient();
 
-    const validatedFields = SignUpSchema.safeParse({
-        email: formData.get('email'),
-        password: formData.get('password'),
-    });
+  const validatedFields = SignUpSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
 
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: "Invalid fields. Failed to create a new account.",
-        }
-    }
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Invalid fields. Failed to create a new account.",
+    };
+  }
 
-    const {error} = await supabase.auth.signUp(validatedFields.data);
+  const {error} = await supabase.auth.signUp(validatedFields.data);
 
-    if (error) {
-        return {
-            errors: {},
-            message: error.message
-        }
-    }
+  if (error) {
+    return {
+      errors: {},
+      message: error.message,
+    };
+  }
 
-    revalidatePath('/')
-    redirect('/')
+  revalidatePath("/");
+  redirect("/");
 }
 
 export type State = {
-    errors?: {
-        email?: string[];
-        password?: string[];
-    };
-    message?: string;
-}
+  errors?: {
+    email?: string[];
+    password?: string[];
+  };
+  message?: string;
+};
 
 const LoginSchema = z.object({
-    email: z.string().min(1, 'Email is required.'),
-    password: z.string().min(1, 'Password is required.')
-})
+  email: z.string().min(1, "Email is required."),
+  password: z.string().min(1, "Password is required."),
+});
 
 const SignUpSchema = z.object({
-    email: z.string().email("The email provided has not a valid format."),
-    password: z.string().min(4, "The password should have at least 4 characters.")
+  email: z.string().email("The email provided has not a valid format."),
+  password: z
+    .string()
+    .min(4, "The password should have at least 4 characters."),
 });

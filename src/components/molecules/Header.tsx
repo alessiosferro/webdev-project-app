@@ -1,107 +1,102 @@
-'use client';
+"use client";
 
 import {
-    Flex,
-    IconButton,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
-    useDisclosure
+  Flex,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import {useTranslations} from "next-intl";
 import {Link, usePathname, useRouter} from "@/navigation";
 import {AppUser} from "@/model/user-profile.model";
 import UserProfileButton from "@/components/atoms/UserProfileButton";
-import {FiHome, FiLogOut, FiPlus, FiUser} from "react-icons/fi";
-import {createClient} from "@/utils/supabase/client";
+import {FiHome, FiPlus, FiUser} from "react-icons/fi";
 import {colorScheme} from "@/utils/chakra/theme";
 import {ReactNode} from "react";
+import LogoutButton from "@/components/atoms/LogoutButton";
 
 export default function Header({user, addPostForm}: HeaderContentProps) {
-    const t = useTranslations('common');
-    const {push, refresh} = useRouter();
-    const pathname = usePathname();
-    const isHome = pathname === '/';
-    const {isOpen: isPostModalOpen, onOpen: openPostModal, onClose: closePostModal} = useDisclosure();
+  const t = useTranslations("common");
+  const {refresh} = useRouter();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
-    const handleLogout = async () => {
-        const supabase = createClient();
+  const {
+    isOpen: isPostModalOpen,
+    onOpen: openPostModal,
+    onClose: closePostModal,
+  } = useDisclosure();
 
-        await supabase.auth.signOut();
+  if (!user) return null;
 
-        push('/');
-        refresh();
-    }
+  return (
+    <form>
+      <Flex key={user?.id} justify="space-between" as="header">
+        <Flex gap="1rem">
+          <IconButton
+            type="button"
+            icon={<FiPlus/>}
+            variant="solid"
+            borderRadius="full"
+            onClick={openPostModal}
+            colorScheme={colorScheme}
+            aria-label="New post"
+          />
 
-    if (!user) return null;
+          {!isHome && (
+            <IconButton
+              type="button"
+              variant="ghost"
+              aria-label="Home"
+              fontSize="2rem"
+              as={Link}
+              href="/"
+              colorScheme={colorScheme}
+              icon={<FiHome/>}
+            />
+          )}
+        </Flex>
 
-    return (
-        <>
-            <Flex
-                key={user?.id}
-                justify="space-between"
-                as="header">
-                <Flex gap="1rem">
-                    <IconButton icon={<FiPlus/>}
-                                variant="solid"
-                                borderRadius="full"
-                                onClick={openPostModal}
-                                colorScheme={colorScheme}
-                                aria-label="New post"
-                    />
+        <Menu placement="bottom-end">
+          <MenuButton type="button">
+            <UserProfileButton as="div" showFullName={false} user={user}/>
+          </MenuButton>
 
-                    {!isHome && <IconButton
-                        variant="ghost"
-                        aria-label="Home"
-                        fontSize="2rem"
-                        as={Link}
-                        href="/"
-                        colorScheme={colorScheme}
-                        icon={<FiHome/>}
-                    />}
-                </Flex>
+          <MenuList>
+            <MenuItem icon={<FiUser/>} href="/profile" as={Link}>
+              {t("button.yourProfile")}
+            </MenuItem>
 
-                <Menu placement="bottom-end">
-                    <MenuButton>
-                        <UserProfileButton as="div" showFullName={false} user={user}/>
-                    </MenuButton>
+            <LogoutButton>
+              {t("button.logout")}
+            </LogoutButton>
+          </MenuList>
+        </Menu>
+      </Flex>
 
-                    <MenuList>
-                        <MenuItem icon={<FiUser/>}
-                                  href="/profile"
-                                  as={Link}>
-                            {t('button.yourProfile')}
-                        </MenuItem>
-
-                        <MenuItem onClick={handleLogout} icon={<FiLogOut fontSize="1.6rem"/>} color="red.500">
-                            {t('button.logout')}
-                        </MenuItem>
-                    </MenuList>
-                </Menu>
-            </Flex>
-
-            <Modal isOpen={isPostModalOpen} onClose={closePostModal}>
-                <ModalOverlay/>
-                <ModalContent>
-                    <ModalHeader>Aggiungi nuovo post</ModalHeader>
-                    <ModalCloseButton/>
-                    <ModalBody onSubmit={() => closePostModal()}>
-                        {addPostForm}
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </>
-    )
+      <Modal isOpen={isPostModalOpen} onClose={closePostModal}>
+        <ModalOverlay/>
+        <ModalContent>
+          <ModalHeader>Aggiungi nuovo post</ModalHeader>
+          <ModalCloseButton/>
+          <ModalBody onSubmit={() => closePostModal()}>{addPostForm}</ModalBody>
+        </ModalContent>
+      </Modal>
+    </form>
+  );
 }
 
+
 interface HeaderContentProps {
-    user: AppUser | null;
-    addPostForm: ReactNode;
+  user: AppUser | null;
+  addPostForm: ReactNode;
 }
