@@ -15,7 +15,7 @@ export default function GoogleLoginButton() {
 
   return (
     <Flex gap="2rem" align="center" position="absolute">
-      <GoogleLogin width="300px" onSuccess={handleSubmit}/>
+      <GoogleLogin onSuccess={handleSubmit}/>
 
       {isLoading && <LoadingSpinner/>}
     </Flex>

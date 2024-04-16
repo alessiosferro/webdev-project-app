@@ -1,16 +1,9 @@
 "use client";
 
-import {
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  Input,
-  VisuallyHidden,
-} from "@chakra-ui/react";
-import { CommonControlProps } from "@/model/common-control.props";
-import { Controller } from "react-hook-form";
-import { forwardRef } from "react";
+import {FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, VisuallyHidden,} from "@chakra-ui/react";
+import {CommonControlProps} from "@/model/common-control.props";
+import {Controller} from "react-hook-form";
+import {forwardRef} from "react";
 
 const InputControl = forwardRef<HTMLInputElement, CommonControlProps>(
   function InputControl(props, ref) {
@@ -23,6 +16,7 @@ const InputControl = forwardRef<HTMLInputElement, CommonControlProps>(
       placeholder,
       type,
       rules,
+      ...controlProps
     } = props;
 
     return (
@@ -32,10 +26,10 @@ const InputControl = forwardRef<HTMLInputElement, CommonControlProps>(
         rules={rules}
         defaultValue={null}
         render={({
-          field: { ref: inputRef, value, ...fieldProps },
-          fieldState: { error },
-        }) => (
-          <FormControl isInvalid={!!error}>
+                   field: {ref: inputRef, value, ...fieldProps},
+                   fieldState: {error},
+                 }) => (
+          <FormControl {...controlProps} isInvalid={!!error}>
             {labelVisuallyHidden ? (
               <VisuallyHidden>
                 <FormLabel>{label}</FormLabel>
@@ -48,12 +42,12 @@ const InputControl = forwardRef<HTMLInputElement, CommonControlProps>(
               {...fieldProps}
               {...(type === "file"
                 ? {
-                    p: 0,
-                    border: "none",
-                  }
+                  p: 0,
+                  border: "none",
+                }
                 : {
-                    value,
-                  })}
+                  value,
+                })}
               ref={(el) => {
                 inputRef(el);
 

@@ -29,12 +29,10 @@ export default function RootLayout({
                 <Header addPostForm={<AddPostFormServer/>} user={user}/>
 
                 <Container
+                  maxW={{md: "container.md"}}
                   display="flex"
-                  minH="100dvh"
                   flexDirection="column"
                 >
-
-
                   <Box flex={1} pt="2rem" pb="4rem" as="main">
                     {children}
                   </Box>

@@ -66,14 +66,13 @@ export default function LoginForm() {
 
   return (
     <FormProvider {...form}>
-      <Box as="form">
-        <Heading mb="2rem" as="h2" size="lg">
-          Login
-        </Heading>
+      <Box mt={{base: 0, md: "4rem"}} as="form">
+        <Heading mb="2rem" as="h1" size="2xl">{t('login.title')}</Heading>
+        <Text mb="3rem">{t('login.description')}</Text>
 
         <GoogleLoginButton/>
 
-        <Flex mt="8rem" mb="2rem" direction="column" gap="1rem">
+        <Flex mt="10rem" mb="3rem" direction="column" gap="2rem">
           <InputControl
             label={t("label.email")}
             rules={requiredField}
@@ -91,9 +90,11 @@ export default function LoginForm() {
           />
         </Flex>
 
-        <Flex gap="1rem">
+        <Flex direction={{base: "column", md: "row"}} gap="2rem">
           <Button
+            flex={1}
             variant="solid"
+            p="1rem"
             type="submit"
             colorScheme={colorScheme}
             formAction={loginAction}
@@ -102,7 +103,9 @@ export default function LoginForm() {
           </Button>
 
           <Button
-            variant="solid"
+            flex={1}
+            variant="outline"
+            p="1rem"
             type="submit"
             colorScheme={colorScheme}
             formAction={signupAction}

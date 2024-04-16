@@ -1,8 +1,8 @@
-import { AppUser } from "@/model/user-profile.model";
-import { Avatar, Flex, FlexProps, Text } from "@chakra-ui/react";
+import {AppUser} from "@/model/user-profile.model";
+import {Avatar, Flex, FlexProps, Text} from "@chakra-ui/react";
 
 export default function UserProfileButton(props: UserProfileButtonProps) {
-  const { user, showFullName = true, ...flexProps } = props;
+  const {user, showFullName = true, ...flexProps} = props;
 
   const fullName =
     user?.profile?.first_name &&
@@ -19,7 +19,7 @@ export default function UserProfileButton(props: UserProfileButtonProps) {
       gap="1rem"
       {...flexProps}
     >
-      <Avatar size="lg" src={imageUrl} />
+      <Avatar width="4.8rem" height="4.8rem" src={imageUrl}/>
 
       {showFullName && <Text>{fullName}</Text>}
     </Flex>

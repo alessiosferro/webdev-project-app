@@ -54,6 +54,7 @@ const PostCard = ({post, user}: PostCardProps) => {
     >
       <Flex gap="1.5rem">
         <Avatar
+          display={{base: "none", md: "block"}}
           flexShrink={0}
           size="lg"
           name={fullName}
@@ -63,6 +64,8 @@ const PostCard = ({post, user}: PostCardProps) => {
         <Flex flex={1} justify="space-between">
           <Flex flex={1} gap=".5rem" direction="column">
             <Flex align="center" gap="1rem">
+              <Avatar name={fullName} src={post.users?.image_url}/>
+
               <Text fontWeight="bold">{fullName}</Text>
 
               <Text display="flex" gap="1rem" color="gray.500">
@@ -123,7 +126,7 @@ const PostContent = ({post}: { post: Post }) => {
       <Text>{post.message}</Text>
 
       {post.image_url && (
-        <Box bgColor="black" position="relative" height="60rem">
+        <Box bgColor="black" position="relative" height={{base: "40rem", md: "50rem"}}>
           <Image sizes="" objectFit="contain" objectPosition="center" fill src={post.image_url} alt=""/>
         </Box>
       )}

@@ -12,6 +12,8 @@ import useValidationRules from "@/hooks/use-validation-rules";
 import {useFormState} from "react-dom";
 import {createPost} from "@/utils/actions";
 import {FormProvider, useForm} from "react-hook-form";
+import InputControl from "@/components/molecules/InputControl";
+import SubmitButton from "@/components/atoms/SubmitButton";
 
 const AddPostForm = (props: AddPostFormProps) => {
   const {cities, disruptions} = props;
@@ -19,10 +21,21 @@ const AddPostForm = (props: AddPostFormProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const t = useTranslations("common");
 
+  const formRef = useRef<HTMLFormElement | null>(null);
+
   const [createPostState, createPostAction] = useFormState(createPost, {
     message: "",
     errors: {},
+    success: false,
   });
+
+  useEffect(() => {
+    if (!createPostState.success) return;
+
+    formRef.current?.dispatchEvent(new Event('createpostcomplete', {
+      bubbles: true,
+    }));
+  }, [createPostState]);
 
   const {message} = createPostState;
 
@@ -33,6 +46,7 @@ const AddPostForm = (props: AddPostFormProps) => {
 
   const form = useForm({
     defaultValues: {
+      address: "",
       disruption_id: "",
       city_id: "",
       message: "",
@@ -52,9 +66,10 @@ const AddPostForm = (props: AddPostFormProps) => {
   return (
     <FormProvider {...form}>
       <Flex
+        ref={formRef}
         as="form"
         action={createPostAction}
-        gap="2rem"
+        gap="3rem"
         pb="2rem"
         onReset={() => setFileList(null)}
         direction="column"
@@ -67,22 +82,27 @@ const AddPostForm = (props: AddPostFormProps) => {
           name="message"
         />
 
-        <Flex gap="1rem" width="100%">
-          <SelectControl
-            label={t("label.city")}
-            rules={requiredField}
-            options={cities}
-            name="city_id"
-          />
+        <InputControl
+          label={t("label.address")}
+          rules={requiredField}
+          placeholder={t("placeholder.enterAddress")}
+          name="address"
+        />
 
-          <SelectControl
-            label={t("label.disruption")}
-            rules={requiredField}
-            options={disruptions}
-            translateKey="disruption"
-            name="disruption_id"
-          />
-        </Flex>
+        <SelectControl
+          label={t("label.disruption")}
+          rules={requiredField}
+          options={disruptions}
+          translateKey="disruption"
+          name="disruption_id"
+        />
+
+        <SelectControl
+          label={t("label.city")}
+          rules={requiredField}
+          options={cities}
+          name="city_id"
+        />
 
         <InputFilePreview
           label={t("label.uploadPhoto")}
@@ -102,15 +122,7 @@ const AddPostForm = (props: AddPostFormProps) => {
             Reset
           </Button>
 
-          <Button
-            flex={1}
-            p="1rem"
-            type="submit"
-            colorScheme={colorScheme}
-            variant="solid"
-          >
-            Invia
-          </Button>
+          <SubmitButton/>
         </Flex>
       </Flex>
     </FormProvider>

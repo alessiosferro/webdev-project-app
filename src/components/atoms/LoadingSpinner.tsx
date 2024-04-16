@@ -6,7 +6,7 @@ export default function LoadingSpinner(props: SpinnerProps) {
       thickness=".2rem"
       speed="600ms"
       emptyColor="gray.200"
-      color="blue.500"
+      color="blue.200"
       size="md"
       {...props}
     />

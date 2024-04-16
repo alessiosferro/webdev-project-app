@@ -1,9 +1,9 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import {createClient} from "@/utils/supabase/server";
 import getUser from "@/utils/supabase/user";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import {revalidatePath} from "next/cache";
+import {z} from "zod";
 
 export const createPost = async (
   state: CreatePostState | undefined,
@@ -12,6 +12,7 @@ export const createPost = async (
   const data = Object.fromEntries(formData.entries()) as {
     message: string;
     image: File;
+    adddress: string;
     disruption_id: string;
     city_id: string;
   };
@@ -25,11 +26,12 @@ export const createPost = async (
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
       message: "Invalid fields. New post was not created.",
     };
   }
 
-  const { city_id, disruption_id, message, image } = validatedFields.data;
+  const {city_id, address, disruption_id, message, image} = validatedFields.data;
 
   const supabase = createClient();
 
@@ -38,9 +40,9 @@ export const createPost = async (
   let image_url: string = "";
 
   if (image) {
-    const { data: uploadData } = await supabase.storage
+    const {data: uploadData} = await supabase.storage
       .from("posts")
-      .upload(`${user?.id}/posts/${image.name}`, image, { upsert: true });
+      .upload(`${user?.id}/posts/${image.name}`, image, {upsert: true});
 
     image_url = uploadData?.path
       ? `https://loywoviwfotlcofcfoiu.supabase.co/storage/v1/object/public/posts/${uploadData?.path}`
@@ -49,7 +51,8 @@ export const createPost = async (
 
   await supabase.from("posts").insert({
     user_id: user?.id,
-    ...(image_url && { image_url }),
+    ...(image_url && {image_url}),
+    address,
     disruption_id,
     city_id,
     message,
@@ -59,6 +62,7 @@ export const createPost = async (
 
   return {
     message: Date.now().toString(),
+    success: true,
     errors: {},
   };
 };
@@ -71,11 +75,13 @@ export interface CreatePostState {
     city_id?: string[];
   };
   message?: string;
+  success?: boolean;
 }
 
 const CreatePostSchema = z.object({
-  message: z.string({ required_error: "message is required." }),
-  city_id: z.number({ required_error: "city_id is required." }),
-  disruption_id: z.number({ required_error: "disruption_id is required" }),
+  message: z.string({required_error: "message is required."}),
+  address: z.string({required_error: "address is required."}),
+  city_id: z.number({required_error: "city_id is required."}),
+  disruption_id: z.number({required_error: "disruption_id is required"}),
   image: z.instanceof(File),
 });

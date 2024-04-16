@@ -1,42 +1,21 @@
 "use client";
 
-import {
-  Box,
-  Container,
-  Flex,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  useDisclosure,
-} from "@chakra-ui/react";
+import {Box, Container, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList,} from "@chakra-ui/react";
 import {useTranslations} from "next-intl";
-import {Link, usePathname, useRouter} from "@/navigation";
+import {Link, usePathname} from "@/navigation";
 import {AppUser} from "@/model/user-profile.model";
 import UserProfileButton from "@/components/atoms/UserProfileButton";
-import {FiHome, FiPlus, FiUser} from "react-icons/fi";
+import {FiHome, FiUser} from "react-icons/fi";
 import {colorScheme} from "@/utils/chakra/theme";
 import {ReactNode} from "react";
 import LogoutButton from "@/components/atoms/LogoutButton";
+import AddPost from "@/components/molecules/AddPost";
 
 export default function Header({user, addPostForm}: HeaderContentProps) {
   const t = useTranslations("common");
-  const {refresh} = useRouter();
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  const {
-    isOpen: isPostModalOpen,
-    onOpen: openPostModal,
-    onClose: closePostModal,
-  } = useDisclosure();
 
   if (!user) return null;
 
@@ -48,20 +27,12 @@ export default function Header({user, addPostForm}: HeaderContentProps) {
          py="2rem"
          boxShadow="0 0 .6rem .3rem rgba(0,0,0,.05)"
          top={0}>
-      <Container>
+      <Container maxW={{md: "container.md"}}>
         <Flex key={user?.id}
               justify="space-between"
               as="header">
-          <Flex gap="2rem">
-            <IconButton
-              type="button"
-              icon={<FiPlus/>}
-              variant="solid"
-              borderRadius="full"
-              onClick={openPostModal}
-              colorScheme={colorScheme}
-              aria-label="New post"
-            />
+          <Flex gap="2rem" align="center">
+            <AddPost addPostForm={addPostForm}/>
 
             {!isHome && (
               <IconButton
@@ -94,15 +65,6 @@ export default function Header({user, addPostForm}: HeaderContentProps) {
           </Menu>
         </Flex>
       </Container>
-
-      <Modal size={{base: "full", md: "lg"}} isOpen={isPostModalOpen} onClose={closePostModal}>
-        <ModalOverlay/>
-        <ModalContent>
-          <ModalHeader>Aggiungi nuovo post</ModalHeader>
-          <ModalCloseButton/>
-          <ModalBody onSubmit={() => closePostModal()}>{addPostForm}</ModalBody>
-        </ModalContent>
-      </Modal>
     </Box>
   );
 }

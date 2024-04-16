@@ -2,9 +2,11 @@
 
 import InputControl from "@/components/molecules/InputControl";
 import UploadedImagePreview from "@/components/atoms/UploadedImagePreview";
-import { Dispatch, forwardRef, SetStateAction, useEffect } from "react";
-import { CommonControlProps } from "@/model/common-control.props";
-import { Flex } from "@chakra-ui/react";
+import {Dispatch, forwardRef, SetStateAction, useEffect} from "react";
+import {CommonControlProps} from "@/model/common-control.props";
+import {Button, Flex} from "@chakra-ui/react";
+import {FiImage} from "react-icons/fi";
+import {colorScheme} from "@/utils/chakra/theme";
 
 const InputFilePreview = forwardRef<
   HTMLInputElement,
@@ -31,11 +33,27 @@ const InputFilePreview = forwardRef<
     };
   }, []);
 
-  return (
-    <Flex width="100%" direction="column">
-      <InputControl ref={inputRef} type="file" {...props} />
+  const handleButtonClick = () => {
+    if (!inputRef || typeof inputRef === 'function') return;
 
-      <UploadedImagePreview fileList={fileList} />
+    inputRef.current?.click();
+  }
+
+  return (
+    <Flex width="100%" gap="1.5rem" align="flex-start" direction="column">
+      <InputControl display="none" ref={inputRef} type="file" {...props} />
+
+      <Button aria-label="Upload a photo"
+              onClick={handleButtonClick}
+              colorScheme={colorScheme}
+              gap=".8rem"
+              p="1rem"
+              variant="ghost"
+              leftIcon={<FiImage fontSize="2rem"/>}>
+        Add a photo
+      </Button>
+
+      <UploadedImagePreview fileList={fileList}/>
     </Flex>
   );
 });

@@ -1,7 +1,8 @@
-import { HTMLInputTypeAttribute } from "react";
-import { UseControllerProps } from "react-hook-form";
+import {HTMLInputTypeAttribute} from "react";
+import {UseControllerProps} from "react-hook-form";
+import {FormControlProps} from "@chakra-ui/react";
 
-export interface CommonControlProps extends Pick<UseControllerProps, "rules"> {
+export interface CommonControlProps extends Pick<UseControllerProps, "rules">, FormControlProps {
   name: string;
   label?: string;
   placeholder?: string;

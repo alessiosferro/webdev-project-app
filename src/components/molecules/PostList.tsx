@@ -3,7 +3,12 @@ import PostCard from "@/components/atoms/PostCard";
 import getPosts from "@/utils/supabase/posts";
 import {User} from "@supabase/supabase-js";
 
-const PostList = async ({user, filterByUserId}: PostListProps) => {
+const PostList = async (props: PostListProps) => {
+  const {
+    user,
+    filterByUserId,
+  } = props;
+
   const posts = await getPosts(user && filterByUserId ? user.id : "");
 
   return (
