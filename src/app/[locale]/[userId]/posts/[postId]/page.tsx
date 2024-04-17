@@ -1,18 +1,19 @@
-import { createClient } from "@/utils/supabase/server";
+import {createClient} from "@/utils/supabase/server";
 import PostCard from "@/components/atoms/PostCard";
 import Post from "@/model/post.model";
-import { notFound } from "next/navigation";
+import {notFound} from "next/navigation";
 import getUser from "@/utils/supabase/user";
-import { revalidatePath } from "next/cache";
+import {revalidatePath} from "next/cache";
 import ClientFormProvider from "@/components/providers/ClientFormProvider";
+import BackButton from "@/components/atoms/BackButton";
 
 const PostPage = async ({
-  params,
-}: {
+                          params,
+                        }: {
   params: { postId: string; userId: string; locale: string };
   searchParams: Record<string, string>;
 }) => {
-  const { userId, postId } = params;
+  const {userId, postId} = params;
 
   const user = await getUser();
 
@@ -56,10 +57,12 @@ const PostPage = async ({
 
   return (
     <ClientFormProvider defaultValues={defaultValues}>
-      <PostCard user={user} post={post.data} />
+      <BackButton mb="2rem"/>
+
+      <PostCard user={user} post={post.data}/>
 
       {postComments.map((post) => (
-        <PostCard user={user} post={post} key={post.id} />
+        <PostCard user={user} post={post} key={post.id}/>
       ))}
     </ClientFormProvider>
   );

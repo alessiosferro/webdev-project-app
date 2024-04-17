@@ -64,7 +64,7 @@ const PostCard = ({post, user}: PostCardProps) => {
         <Flex flex={1} justify="space-between">
           <Flex flex={1} gap=".5rem" direction="column">
             <Flex align="center" gap="1rem">
-              <Avatar name={fullName} src={post.users?.image_url}/>
+              <Avatar display={{md: "none"}} name={fullName} src={post.users?.image_url}/>
 
               <Text fontWeight="bold">{fullName}</Text>
 
@@ -102,7 +102,7 @@ const PostCard = ({post, user}: PostCardProps) => {
                   variant="ghost"
                 />
 
-                <MenuList>
+                <MenuList position="absolute" right={0}>
                   <MenuItem
                     onClick={handleDeletePost}
                     color="red"
