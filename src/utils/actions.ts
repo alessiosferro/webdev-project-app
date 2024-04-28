@@ -79,9 +79,9 @@ export interface CreatePostState {
 }
 
 const CreatePostSchema = z.object({
-  message: z.string({required_error: "message is required."}),
-  address: z.string({required_error: "address is required."}),
-  city_id: z.number({required_error: "city_id is required."}),
-  disruption_id: z.number({required_error: "disruption_id is required"}),
+  message: z.string().min(1, "Message is required."),
+  address: z.string().min(1, "Address is required."),
+  city_id: z.number().min(1, "City is required"),
+  disruption_id: z.number().min(1, "Disruption is required"),
   image: z.instanceof(File),
 });

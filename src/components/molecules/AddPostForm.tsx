@@ -29,14 +29,6 @@ const AddPostForm = (props: AddPostFormProps) => {
     success: false,
   });
 
-  useEffect(() => {
-    if (!createPostState.success) return;
-
-    formRef.current?.dispatchEvent(new Event('createpostcomplete', {
-      bubbles: true,
-    }));
-  }, [createPostState]);
-
   const {message} = createPostState;
 
   const fileListState = useState<FileList | null>(null);
@@ -45,14 +37,26 @@ const AddPostForm = (props: AddPostFormProps) => {
   const {requiredField} = useValidationRules();
 
   const form = useForm({
-    defaultValues: {
-      address: "",
-      disruption_id: "",
-      city_id: "",
-      message: "",
-      image: null,
-    },
+    defaultValues
   });
+
+  useEffect(() => {
+    if (!createPostState.success) {
+      form.clearErrors();
+
+      Object.entries(createPostState.errors).forEach(([name, errors]) => {
+        form.setError(name as keyof typeof defaultValues, {
+          message: errors.join(', '),
+        });
+      });
+
+      return;
+    }
+
+    formRef.current?.dispatchEvent(new Event('createpostcomplete', {
+      bubbles: true,
+    }));
+  }, [createPostState]);
 
   useEffect(() => {
     form.reset();
@@ -127,6 +131,14 @@ const AddPostForm = (props: AddPostFormProps) => {
       </Flex>
     </FormProvider>
   );
+};
+
+const defaultValues = {
+  address: "",
+  disruption_id: "",
+  city_id: "",
+  message: "",
+  image: null,
 };
 
 export default AddPostForm;

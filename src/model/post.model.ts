@@ -1,4 +1,5 @@
 import UserProfile from "@/model/user-profile.model";
+import {City, Disruption} from "@/model/types";
 
 export default interface Post {
   id: number;
@@ -6,7 +7,10 @@ export default interface Post {
   image_url?: string;
   distruption_id?: string;
   city_id?: string;
+  address: string;
   user_id?: string;
   message: string;
   users: UserProfile;
+  cities: City;
+  disruptions: Disruption;
 }

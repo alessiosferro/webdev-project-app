@@ -23,6 +23,7 @@ import {User} from "@supabase/supabase-js";
 import {FiMoreVertical, FiTrash2} from "react-icons/fi";
 import {useParams} from "next/navigation";
 import {getUserName} from "@/utils";
+import {useTranslations} from "next-intl";
 
 dayjs.extend(relativeTime);
 
@@ -121,8 +122,12 @@ const PostCard = ({post, user}: PostCardProps) => {
 };
 
 const PostContent = ({post}: { post: Post }) => {
+  const t = useTranslations('common');
+
   return (
     <Flex gap="1rem" direction="column">
+      <Text fontSize="xs">{post.cities.name}, {post.address}, {t(`disruption.${post.disruptions.name}`)}</Text>
+
       <Text>{post.message}</Text>
 
       {post.image_url && (
