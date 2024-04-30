@@ -9,57 +9,57 @@ import {FiImage} from "react-icons/fi";
 import {colorScheme} from "@/utils/chakra/theme";
 
 const InputFilePreview = forwardRef<
-  HTMLInputElement,
-  InputFilePreviewProps & Omit<CommonControlProps, "type">
->(function InputFilePreview(props, inputRef) {
-  const [fileList, setFileList] = props.fileListState;
+    HTMLInputElement,
+    InputFilePreviewProps & Omit<CommonControlProps, "type">
+>(function InputFilePreview({fileListState, ...inputProps}, inputRef) {
+    const [fileList, setFileList] = fileListState;
 
-  function handleFileChange(e: Event) {
-    const input = e.target as HTMLInputElement;
-    setFileList(input.files);
-  }
+    function handleFileChange(e: Event) {
+        const input = e.target as HTMLInputElement;
+        setFileList(input.files);
+    }
 
-  useEffect(() => {
-    if (!inputRef || typeof inputRef === "function") return;
+    useEffect(() => {
+        if (!inputRef || typeof inputRef === "function") return;
 
-    const inputElement = inputRef.current;
+        const inputElement = inputRef.current;
 
-    if (!inputElement) return;
+        if (!inputElement) return;
 
-    inputElement.addEventListener("change", handleFileChange);
+        inputElement.addEventListener("change", handleFileChange);
 
-    return () => {
-      inputElement.removeEventListener("change", handleFileChange);
-    };
-  }, []);
+        return () => {
+            inputElement.removeEventListener("change", handleFileChange);
+        };
+    }, []);
 
-  const handleButtonClick = () => {
-    if (!inputRef || typeof inputRef === 'function') return;
+    const handleButtonClick = () => {
+        if (!inputRef || typeof inputRef === 'function') return;
 
-    inputRef.current?.click();
-  }
+        inputRef.current?.click();
+    }
 
-  return (
-    <Flex width="100%" gap="1.5rem" align="flex-start" direction="column">
-      <InputControl display="none" ref={inputRef} type="file" {...props} />
+    return (
+        <Flex width="100%" gap="1.5rem" align="flex-start" direction="column">
+            <InputControl display="none" ref={inputRef} type="file" {...inputProps} />
 
-      <Button aria-label="Upload a photo"
-              onClick={handleButtonClick}
-              colorScheme={colorScheme}
-              gap=".8rem"
-              p="1rem"
-              variant="ghost"
-              leftIcon={<FiImage fontSize="2rem"/>}>
-        Add a photo
-      </Button>
+            <Button aria-label="Upload a photo"
+                    onClick={handleButtonClick}
+                    colorScheme={colorScheme}
+                    gap=".8rem"
+                    p="1rem"
+                    variant="ghost"
+                    leftIcon={<FiImage fontSize="2rem"/>}>
+                Add a photo
+            </Button>
 
-      <UploadedImagePreview fileList={fileList}/>
-    </Flex>
-  );
+            <UploadedImagePreview fileList={fileList}/>
+        </Flex>
+    );
 });
 
 export interface InputFilePreviewProps {
-  fileListState: [FileList | null, Dispatch<SetStateAction<FileList | null>>];
+    fileListState: [FileList | null, Dispatch<SetStateAction<FileList | null>>];
 }
 
 export default InputFilePreview;
