@@ -62,19 +62,22 @@ const PostCard = ({post, user}: PostCardProps) => {
                         <Flex align="center" gap="1rem">
                             <Avatar display={{md: 'none'}} flexShrink={0} src={post.users?.image_url} alt=""/>
 
-                            <Flex gap={{base: 0, md: '1rem'}} direction={{base: 'column', md: 'row'}}>
-                                <Text fontWeight="bold">{fullName}</Text>
+                            <Flex color="gray.500"
+                                  align="center"
+                                  gap={{base: 0, md: '1rem'}}
+                                  direction={{base: 'column', md: 'row'}}>
+                                <Text color="black" fontWeight="bold">{fullName}</Text>
 
-                                <Text alignItems="center" display="flex" gap="1rem" color="gray.500">
-                                    <Box as="span" display={{base: "none", md: "block"}}>
-                                        {post.users?.email}
-                                    </Box>
-                                    <Box as="span" display={{base: "none", md: "block"}}>
-                                        ·
-                                    </Box>
-                                    <Text fontSize="xs" as="time" dateTime={post.created_at}>
-                                        {timeFromNow}
-                                    </Text>
+                                <Text display={{base: "none", md: "block"}}>
+                                    {post.users?.email}
+                                </Text>
+
+                                <Text display={{base: "none", md: "block"}}>
+                                    ·
+                                </Text>
+
+                                <Text mt=".1rem" fontSize="xs" lineHeight="xs" as="time" dateTime={post.created_at}>
+                                    {timeFromNow}
                                 </Text>
                             </Flex>
                         </Flex>

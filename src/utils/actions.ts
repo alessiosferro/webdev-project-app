@@ -39,34 +39,38 @@ export const createPost = async (
 
     let image_url: string = "";
 
-    if (image.size > 0) {
+    if (!!image.name && image.size > 0) {
         const time = Date.now();
 
         const {data: uploadData} = await supabase.storage
             .from("posts")
-            .upload(`${user?.id}/posts/${time}_${image.name}`, image);
+            .upload(`${user?.id}/posts/${image.name}_${time}`, image);
 
         image_url = uploadData?.path
             ? `https://loywoviwfotlcofcfoiu.supabase.co/storage/v1/object/public/posts/${uploadData?.path}`
             : "";
     }
 
-    await supabase.from("posts").insert({
-        user_id: user?.id,
-        ...(image_url && {image_url}),
-        address,
-        disruption_id,
-        city_id,
-        message,
-    });
+    try {
+        await supabase.from("posts").insert({
+            user_id: user?.id,
+            ...(image_url && {image_url}),
+            address,
+            disruption_id,
+            city_id,
+            message,
+        });
 
-    revalidatePath("/");
 
-    return {
-        message: Date.now().toString(),
-        success: true,
-        errors: {},
-    };
+        revalidatePath("/");
+
+        return {
+            message: Date.now().toString(),
+            success: true,
+            errors: {},
+        };
+    } catch (e) {
+    }
 };
 
 export interface CreatePostState {

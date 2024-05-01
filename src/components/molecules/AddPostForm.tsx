@@ -39,6 +39,8 @@ const AddPostForm = (props: AddPostFormProps) => {
     });
 
     useEffect(() => {
+        if (!createPostState) return;
+
         if (createPostState.success) {
             formRef.current?.dispatchEvent(new Event('createpostcomplete', {
                 bubbles: true,
