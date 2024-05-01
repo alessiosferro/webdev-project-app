@@ -1,17 +1,16 @@
 "use client";
 
 import {
-  Avatar,
-  Box,
-  Flex,
-  IconButton,
-  LinkBox,
-  LinkOverlay,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
+    Box,
+    Flex,
+    IconButton,
+    LinkBox,
+    LinkOverlay,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    Text,
 } from "@chakra-ui/react";
 import Post from "@/model/post.model";
 import {Link, useRouter} from "@/navigation";
@@ -24,6 +23,7 @@ import {FiMoreVertical, FiTrash2} from "react-icons/fi";
 import {useParams} from "next/navigation";
 import {getUserName} from "@/utils";
 import {useTranslations} from "next-intl";
+import Avatar from "@/components/atoms/Avatar";
 
 dayjs.extend(relativeTime);
 
@@ -32,6 +32,7 @@ const PostCard = ({post, user}: PostCardProps) => {
     const timeFromNow = dayjs(post.created_at).fromNow();
     const supabase = createClient();
     const {refresh} = useRouter();
+    const t = useTranslations('common');
 
     const params = useParams();
 
@@ -49,23 +50,17 @@ const PostCard = ({post, user}: PostCardProps) => {
             display="flex"
             gap="1rem"
             flexDirection="column"
-            p="1.5rem 2rem 2rem"
+            p={{base: "1.5rem 2rem 2rem", lg: "1.5rem 3rem 3rem 2rem"}}
             borderWidth=".1rem"
             rounded="md"
         >
             <Flex gap="1.5rem">
-                <Avatar
-                    display={{base: "none", md: "block"}}
-                    flexShrink={0}
-                    size="lg"
-                    name={fullName}
-                    src={post.users?.image_url}
-                />
+                <Avatar flexShrink={0} src={post.users?.image_url} alt="" display={{base: 'none', md: 'block'}}/>
 
                 <Flex flex={1} justify="space-between">
                     <Flex flex={1} gap=".5rem" direction="column">
                         <Flex align="center" gap="1rem">
-                            <Avatar display={{md: "none"}} name={fullName} src={post.users?.image_url}/>
+                            <Avatar display={{md: 'none'}} flexShrink={0} src={post.users?.image_url} alt=""/>
 
                             <Text fontWeight="bold">{fullName}</Text>
 
@@ -81,6 +76,10 @@ const PostCard = ({post, user}: PostCardProps) => {
                                 </Box>
                             </Text>
                         </Flex>
+
+                        <Text
+                            fontSize="xs">{post.cities.name}, {post.address}, {t(`disruption.${post.disruptions.name}`)}</Text>
+
                         {postId !== post.id ? (
                             <LinkOverlay
                                 as={Link}
@@ -94,7 +93,7 @@ const PostCard = ({post, user}: PostCardProps) => {
                     </Flex>
 
                     {post.user_id === user?.id && (
-                        <Box position="absolute" right="2rem">
+                        <Box position="absolute" top="2rem" right="3rem">
                             <Menu placement="bottom-end">
                                 <MenuButton
                                     as={IconButton}
@@ -122,14 +121,10 @@ const PostCard = ({post, user}: PostCardProps) => {
 };
 
 const PostContent = ({post}: { post: Post }) => {
-    const t = useTranslations('common');
 
-    console.log(post);
 
     return (
-        <Flex gap="1rem" direction="column">
-            <Text fontSize="xs">{post.cities.name}, {post.address}, {t(`disruption.${post.disruptions.name}`)}</Text>
-
+        <Flex mt="1rem" gap="1.5rem" direction="column">
             <Text>{post.message}</Text>
 
             {post.image_url && (
