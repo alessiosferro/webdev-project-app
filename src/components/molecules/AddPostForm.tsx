@@ -106,6 +106,7 @@ const AddPostForm = (props: AddPostFormProps) => {
                     ref={inputRef}
                     fileListState={fileListState}
                     name="image"
+                    accept="image/png, image/jpeg"
                 />
 
                 <Flex direction={{base: "column", md: "row"}} gap="1rem" w="100%">

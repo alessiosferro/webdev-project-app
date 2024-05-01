@@ -40,9 +40,11 @@ export const createPost = async (
     let image_url: string = "";
 
     if (image.size > 0) {
+        const time = Date.now();
+
         const {data: uploadData} = await supabase.storage
             .from("posts")
-            .upload(`${user?.id}/posts/${image.name}`, image, {upsert: true});
+            .upload(`${user?.id}/posts/${time}_${image.name}`, image);
 
         image_url = uploadData?.path
             ? `https://loywoviwfotlcofcfoiu.supabase.co/storage/v1/object/public/posts/${uploadData?.path}`

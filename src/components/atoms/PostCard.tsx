@@ -62,19 +62,21 @@ const PostCard = ({post, user}: PostCardProps) => {
                         <Flex align="center" gap="1rem">
                             <Avatar display={{md: 'none'}} flexShrink={0} src={post.users?.image_url} alt=""/>
 
-                            <Text fontWeight="bold">{fullName}</Text>
+                            <Flex gap={{base: 0, md: '1rem'}} direction={{base: 'column', md: 'row'}}>
+                                <Text fontWeight="bold">{fullName}</Text>
 
-                            <Text display="flex" gap="1rem" color="gray.500">
-                                <Box as="span" display={{base: "none", md: "block"}}>
-                                    {post.users?.email}
-                                </Box>
-                                <Box as="span" display={{base: "none", md: "block"}}>
-                                    ·
-                                </Box>
-                                <Box as="time" dateTime={post.created_at}>
-                                    {timeFromNow}
-                                </Box>
-                            </Text>
+                                <Text alignItems="center" display="flex" gap="1rem" color="gray.500">
+                                    <Box as="span" display={{base: "none", md: "block"}}>
+                                        {post.users?.email}
+                                    </Box>
+                                    <Box as="span" display={{base: "none", md: "block"}}>
+                                        ·
+                                    </Box>
+                                    <Text fontSize="xs" as="time" dateTime={post.created_at}>
+                                        {timeFromNow}
+                                    </Text>
+                                </Text>
+                            </Flex>
                         </Flex>
 
                         <Text
@@ -121,15 +123,16 @@ const PostCard = ({post, user}: PostCardProps) => {
 };
 
 const PostContent = ({post}: { post: Post }) => {
-
-
     return (
         <Flex mt="1rem" gap="1.5rem" direction="column">
             <Text>{post.message}</Text>
 
             {post.image_url && (
-                <Box bgColor="black" position="relative" height={{base: "40rem", md: "50rem"}}>
-                    <Image sizes="" objectFit="contain" objectPosition="center" fill src={post.image_url} alt=""/>
+                <Box position="relative" h="40rem">
+                    <Image objectFit="cover"
+                           objectPosition="center"
+                           fill
+                           src={post.image_url} alt=""/>
                 </Box>
             )}
         </Flex>
