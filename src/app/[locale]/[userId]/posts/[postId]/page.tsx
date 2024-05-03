@@ -6,70 +6,71 @@ import getUser from "@/utils/supabase/user";
 import {revalidatePath} from "next/cache";
 import ClientFormProvider from "@/components/providers/ClientFormProvider";
 import BackButton from "@/components/atoms/BackButton";
+import {Flex} from "@chakra-ui/react";
 
 const PostPage = async ({
-                            params,
+                          params,
                         }: {
-    params: { postId: string; userId: string; locale: string };
-    searchParams: Record<string, string>;
+  params: { postId: string; userId: string; locale: string };
+  searchParams: Record<string, string>;
 }) => {
-    const {userId, postId} = params;
+  const {userId, postId} = params;
+
+  const user = await getUser();
+
+  const client = createClient();
+
+  const post = await client
+    .rpc('get_post_details')
+    .eq("user_id", userId)
+    .eq("id", postId)
+    .single<Post>();
+
+  if (!post.data) {
+    return notFound();
+  }
+
+  const comments = await client
+    .rpc("get_post_details")
+    .eq("post_id", post.data.id)
+    .returns<Post[]>();
+
+  const postComments = comments.data || ([] as Post[]);
+
+  const commentPost = async (formData: FormData) => {
+    "use server";
+
+    const message = formData.get("message");
+
+    const supabase = createClient();
 
     const user = await getUser();
 
-    const client = createClient();
+    await supabase.from("posts").insert({
+      user_id: user?.id,
+      message,
+      post_id: post.data.id,
+    });
 
-    const post = await client
-        .from("posts")
-        .select("*, cities(*), disruptions(*), users(*)")
-        .eq("user_id", userId)
-        .eq("id", postId)
-        .single<Post>();
+    revalidatePath("/[locale]/[userId]/posts/[postId]");
+  };
 
-    if (!post.data) {
-        return notFound();
-    }
+  return (
+    <ClientFormProvider defaultValues={defaultValues}>
+      <BackButton mb="2rem"/>
 
-    const comments = await client
-        .from("posts")
-        .select()
-        .eq("post_id", post.data.id);
+      <PostCard user={user} post={post.data}/>
 
-    const postComments = comments.data || ([] as Post[]);
-
-    const commentPost = async (formData: FormData) => {
-        "use server";
-
-        const message = formData.get("message");
-
-        const supabase = createClient();
-
-        const user = await getUser();
-
-        await supabase.from("posts").insert({
-            user_id: user?.id,
-            message,
-            post_id: post.data.id,
-        });
-
-        revalidatePath("/[locale]/[userId]/posts/[postId]");
-    };
-
-    return (
-        <ClientFormProvider defaultValues={defaultValues}>
-            <BackButton mb="2rem"/>
-
-            <PostCard user={user} post={post.data}/>
-
-            {postComments.map((post) => (
-                <PostCard user={user} post={post} key={post.id}/>
-            ))}
-        </ClientFormProvider>
-    );
+      <Flex direction="column" gap="2rem" mt="5rem">
+        {postComments.map((post) => (
+          <PostCard user={user} post={post} key={post.id}/>
+        ))}</Flex>
+    </ClientFormProvider>
+  );
 };
 
 const defaultValues = {
-    message: "",
+  message: "",
 };
 
 export default PostPage;

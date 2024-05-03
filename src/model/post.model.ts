@@ -1,6 +1,3 @@
-import UserProfile from "@/model/user-profile.model";
-import {City, Disruption} from "@/model/types";
-
 export default interface Post {
   id: number;
   created_at: string;
@@ -10,7 +7,12 @@ export default interface Post {
   address: string;
   user_id?: string;
   message: string;
-  users: UserProfile;
-  cities: City;
-  disruptions: Disruption;
+  upvotes: number;
+  city_name: string;
+  comments_count?: number;
+  disruption_name: string;
+  user_first_name: string;
+  user_last_name: string;
+  user_email: string;
+  user_image_url: string;
 }

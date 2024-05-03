@@ -4,10 +4,8 @@ import Post from "@/model/post.model";
 export default async function getPosts(userId?: string) {
   const supabase = createClient();
 
-  const query = supabase
-    .from("posts")
-    .select("*, users(*), cities(*), disruptions(*)")
-    .order("created_at", {ascending: false});
+  const query = supabase.rpc('get_posts_with_comments_count')
+    .order("upvotes", {ascending: false});
 
   const {error, data} =
     await (userId ? query.eq("user_id", userId) : query)
@@ -15,7 +13,7 @@ export default async function getPosts(userId?: string) {
 
   if (error || !data) {
     error && console.error(error);
-    return [];
+    return []
   }
 
   return data;
