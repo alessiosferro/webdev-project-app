@@ -1,7 +1,7 @@
 import {Flex} from "@chakra-ui/react";
-import PostCard from "@/components/atoms/PostCard";
 import getPosts from "@/utils/supabase/posts";
 import {User} from "@supabase/supabase-js";
+import PostListClient from "@/components/molecules/PostListClient";
 
 const PostList = async (props: PostListProps) => {
   const {
@@ -9,13 +9,11 @@ const PostList = async (props: PostListProps) => {
     filterByUserId,
   } = props;
 
-  const posts = await getPosts(user && filterByUserId ? user.id : "");
+  const {posts, count} = await getPosts(user && filterByUserId ? user.id : "");
 
   return (
     <Flex direction="column" gap="3rem">
-      {posts.map((post, index) => (
-        <PostCard user={user} post={post} key={post.id}/>
-      ))}
+      <PostListClient posts={posts} count={count} user={user}/>
     </Flex>
   );
 };
