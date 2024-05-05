@@ -6,6 +6,8 @@ import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 export default function SubmitButton(props: ButtonProps) {
   const {pending} = useFormStatus();
 
+  console.log(pending);
+
   return (
     <Button
       flex={1}
@@ -19,6 +21,7 @@ export default function SubmitButton(props: ButtonProps) {
       {...props}
     >
       Invia
+
       {pending && <LoadingSpinner size="sm"/>}
     </Button>
   )

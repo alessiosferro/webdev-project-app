@@ -3,10 +3,9 @@ import PostCard from "@/components/atoms/PostCard";
 import Post from "@/model/post.model";
 import {notFound} from "next/navigation";
 import getUser from "@/utils/supabase/user";
-import {revalidatePath} from "next/cache";
-import ClientFormProvider from "@/components/providers/ClientFormProvider";
 import BackButton from "@/components/atoms/BackButton";
-import {Flex} from "@chakra-ui/react";
+import {Box, Flex} from "@chakra-ui/react";
+import CommentForm from "@/components/molecules/CommentForm";
 
 const PostPage = async ({
                           params,
@@ -31,46 +30,28 @@ const PostPage = async ({
   }
 
   const comments = await client
-    .rpc("get_post_details")
+    .rpc("get_posts_with_comments_count")
     .eq("post_id", post.data.id)
     .returns<Post[]>();
 
   const postComments = comments.data || ([] as Post[]);
 
-  const commentPost = async (formData: FormData) => {
-    "use server";
-
-    const message = formData.get("message");
-
-    const supabase = createClient();
-
-    const user = await getUser();
-
-    await supabase.from("posts").insert({
-      user_id: user?.id,
-      message,
-      post_id: post.data.id,
-    });
-
-    revalidatePath("/[locale]/[userId]/posts/[postId]");
-  };
 
   return (
-    <ClientFormProvider defaultValues={defaultValues}>
+    <Box as="section">
       <BackButton mb="2rem"/>
 
       <PostCard user={user} post={post.data}/>
 
-      <Flex direction="column" gap="2rem" mt="5rem">
+      {postComments.length > 0 && <Flex direction="column" gap="2rem" mt="5rem">
         {postComments.map((post) => (
           <PostCard user={user} post={post} key={post.id}/>
-        ))}</Flex>
-    </ClientFormProvider>
-  );
-};
+        ))}
+      </Flex>}
 
-const defaultValues = {
-  message: "",
+      <CommentForm postId={post.data.id}/>
+    </Box>
+  );
 };
 
 export default PostPage;

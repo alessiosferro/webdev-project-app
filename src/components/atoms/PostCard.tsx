@@ -36,9 +36,16 @@ const PostCard = ({post: initialPost, user}: PostCardProps) => {
   };
 
   const upvoteHandler = async () => {
-    const {data: updatedPost} = await supabase.from("posts").update({
+    await supabase.from("posts").update({
       upvotes: post.upvotes + 1
-    }).eq("id", post.id).select("*, users(*), disruptions(*), cities(*)").single()
+    }).eq("id", post.id);
+
+    const {data: updatedPost} = await supabase
+      .rpc('get_posts_with_comments_count')
+      .eq("id", post.id)
+      .single<Post>();
+
+    if (!updatedPost) return;
 
     setPost(updatedPost);
   }
@@ -81,8 +88,8 @@ const PostCard = ({post: initialPost, user}: PostCardProps) => {
               </Flex>
             </Flex>
 
-            <Text
-              fontSize="xs">{post.city_name}, {post.address}, {t(`disruption.${post.disruption_name}`)}</Text>
+            {post.city_name && post.address && post.disruption_name && <Text
+                fontSize="xs">{post.city_name}, {post.address}, {t(`disruption.${post.disruption_name}`)}</Text>}
 
             <PostContent post={post}/>
 
@@ -96,7 +103,7 @@ const PostCard = ({post: initialPost, user}: PostCardProps) => {
                 <Text mb=".1rem" fontSize="sm">{post.upvotes}</Text>
               </Flex>
 
-              {postId !== post.id && <Flex align="center" mt="2rem" gap=".8rem">
+              {postId !== post.id && post.comments_count !== undefined && <Flex align="center" mt="2rem" gap=".8rem">
                   <IconButton minW="auto"
                               variant="link"
                               as={Link}
